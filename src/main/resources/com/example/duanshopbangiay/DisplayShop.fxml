@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.duanshopbangiay.ProductListController">
+    <HBox alignment="CENTER" prefHeight="26.0" prefWidth="237.0">
+        <Button onAction="#switchToDisplayLogin" text="Logout" prefWidth="100" />
+    </HBox>
+    <children>
+        <ListView fx:id="productListView"/>
+        <HBox alignment="CENTER" spacing="10" fx:id="addProductBox">
+            <TextField fx:id="nameField" promptText="Product Name"/>
+            <TextField fx:id="priceField" promptText="Price"/>
+            <TextField fx:id="quantityField" promptText="Quantity"/>
+            <Button fx:id="addButton" text="Add"/>
+        </HBox>
+    </children>
+</VBox>
+

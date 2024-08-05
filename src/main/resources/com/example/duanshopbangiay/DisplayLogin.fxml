@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.layout.HBox?>
-<VBox xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.duanshopbangiay.HelloController">
+<VBox prefHeight="224.0" prefWidth="308.0" spacing="20" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.duanshopbangiay.LoginController">
     <HBox alignment="CENTER">
-        <Label text="Username: "/>
-        <TextField fx:id="username"/>
+        <VBox.margin>
+            <Insets top="55" right="0" bottom="0" left="0"/>
+        </VBox.margin>
+        <Label text="Username : " />
+        <TextField fx:id="username" />
     </HBox>
     <HBox alignment="CENTER">
-        <Label text="Password: "/>
-        <PasswordField fx:id="password"/>
+        <Label text="Password : " />
+        <PasswordField fx:id="password" />
     </HBox>
-    <HBox alignment="CENTER">
-        <Button text="Login" onAction="#login"/>
+    <HBox alignment="CENTER" prefHeight="26.0" prefWidth="237.0">
+        <Button onAction="#switchToDisplayShop" text="Login" />
     </HBox>
 </VBox>
