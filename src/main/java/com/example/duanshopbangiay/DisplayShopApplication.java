@@ -6,15 +6,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.util.Objects;
-
-public class Test extends Application {
+public class DisplayShopApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("DisplayShop.fxml"));
-        primaryStage.setTitle("Product List");
-        primaryStage.setScene(new Scene(root, 800, 500));
+        primaryStage.setTitle("DisplayShop");
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
 

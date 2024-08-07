@@ -14,7 +14,8 @@
         <Label text="Password : " />
         <PasswordField fx:id="password" />
     </HBox>
-    <HBox alignment="CENTER" prefHeight="26.0" prefWidth="237.0">
+    <HBox alignment="CENTER" prefHeight="26.0" prefWidth="237.0" spacing="20">
         <Button onAction="#switchToDisplayShop" text="Login" />
+        <Button onAction="#switchToRegister" text="Register" />
     </HBox>
 </VBox>
