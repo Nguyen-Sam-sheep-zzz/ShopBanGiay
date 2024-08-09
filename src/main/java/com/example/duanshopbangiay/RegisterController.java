@@ -28,12 +28,8 @@ public class RegisterController {
 
     private static List<User> userList = new ArrayList<>();
 
-    private Stage stage;
-
-    private Scene scene;
-
     @FXML
-    private void handleRegisterButtonAction() throws IOException {
+    private void handleRegisterButtonAction() {
         String username = usernameField.getText();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
@@ -61,9 +57,9 @@ public class RegisterController {
     }
 
     public void switchToDisplayLogin(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(DisplayLoginApplication.class.getResource("DisplayLogin.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
+        Parent root = FXMLLoader.load(LoginApplication.class.getResource("DisplayLogin.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setTitle("Login");
         stage.setScene(scene);
         stage.show();

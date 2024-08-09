@@ -22,8 +22,6 @@ public class LoginController {
 
     private Scene scene;
 
-    private Parent root;
-
     Admin admin1 = new Admin("NhanSam", "123");
     Admin admin2 = new Admin("ChiAnh", "123");
     Admin admin3 = new Admin("VietTam", "123");
@@ -31,15 +29,8 @@ public class LoginController {
 
     List<User> userList = RegisterController.getUserList();
 
-    //    public void switchToDisplayLogin(ActionEvent event) throws IOException {
-//        Parent root = FXMLLoader.load(HelloApplication.class.getResource("DisplayLogin.fxml"));
-//        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
     public void switchToRegister(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(DisplayLoginApplication.class.getResource("Register.fxml"));
+        Parent root = FXMLLoader.load(LoginApplication.class.getResource("Register.fxml"));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setTitle("Register");
@@ -83,21 +74,15 @@ public class LoginController {
                 alert.setContentText("Login successful hello admin " + username);
                 alert.show();
             }
-            Parent root = FXMLLoader.load(DisplayLoginApplication.class.getResource("DisplayShop.fxml"));
+            Parent root = FXMLLoader.load(LoginApplication.class.getResource("DisplayShop.fxml"));
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root);
-            stage.setTitle("Nike");
+            stage.setTitle("Shop");
             stage.setScene(scene);
             stage.show();
         }
     }
-    //    public boolean isExist(String username) {
-//        for (User value : users) {
-//            if (value.getUsername().equals(username))
-//                return true;
-//        }
-//        return false;
-//    }
+
     public User findUser(String username) {
         for (User value : userList) {
             if (value.getUsername().equals(username))

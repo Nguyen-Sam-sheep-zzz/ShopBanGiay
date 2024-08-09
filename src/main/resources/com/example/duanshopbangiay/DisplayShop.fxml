@@ -2,26 +2,42 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.geometry.Insets?>
+
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.duanshopbangiay.ProductListController">
-    <HBox alignment="CENTER" prefHeight="26.0" prefWidth="237.0" spacing="20" >
+      fx:controller="com.example.duanshopbangiay.ProductListController"
+      alignment="CENTER"
+      spacing="20">
+    <HBox alignment="CENTER" spacing="20">
         <padding>
             <Insets top="0" right="0" bottom="10" left="0"/>
         </padding>
-        <Button onAction="#switchToDisplayLogin" text="Logout" prefWidth="100" />
-        <Button onAction="#switchToDisplayLogin" text="List of orders" prefWidth="100" />
+        <Button onAction="#switchToDisplayLogin" text="Logout" prefWidth="100"/>
+        <Button onAction="#switchToOrderList" text="List of orders" prefWidth="100"/>
     </HBox>
-    <ListView fx:id="productListView"/>
+
+    <TableView  fx:id="productTableView" prefWidth="516" maxWidth="516">
+        <columns>
+            <TableColumn fx:id="idColumn" text="ID" prefWidth="100"/>
+            <TableColumn fx:id="nameColumn" text="Product Name" prefWidth="100"/>
+            <TableColumn fx:id="priceColumn" text="Price" prefWidth="100"/>
+            <TableColumn fx:id="quantityColumn" text="Quantity" prefWidth="100"/>
+            <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="116"/>
+        </columns>
+    </TableView>
+
     <HBox alignment="CENTER" spacing="10" fx:id="addProductBox">
         <padding>
             <Insets top="20" right="0" bottom="10" left="0"/>
         </padding>
+        <TextField fx:id="idField" promptText="Product ID"/> <!-- Trường ID -->
         <TextField fx:id="nameField" promptText="Product Name"/>
         <TextField fx:id="priceField" promptText="Price"/>
         <TextField fx:id="quantityField" promptText="Quantity"/>
-        <Button fx:id="addButton" text="Add"/>
+        <Button fx:id="addButton" text="Add" onAction="#addProduct"/> <!-- Gọi phương thức addProduct -->
     </HBox>
+
 </VBox>
+
+

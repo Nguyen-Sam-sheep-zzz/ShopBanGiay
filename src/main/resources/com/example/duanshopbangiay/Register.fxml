@@ -5,9 +5,8 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.GridPane?>
-
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.HBox?>
+
 <GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.duanshopbangiay.RegisterController">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
