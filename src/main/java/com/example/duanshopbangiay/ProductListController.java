@@ -125,7 +125,7 @@ public class ProductListController {
     private void showEditProductDialog(Product product) {
         while (true) {
             // Tạo một dialog mới
-            Dialog<ButtonType> dialog = new Dialog<>(); // Thay đổi kiểu trả về
+            Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setTitle("Edit Product");
 
             // Tạo các trường nhập liệu
@@ -169,17 +169,26 @@ public class ProductListController {
             // Kiểm tra trường nhập liệu có bị bỏ trống không
             if (idText.isEmpty() || name.isEmpty() || priceText.isEmpty() || quantityText.isEmpty()) {
                 showError("Invalid information", "Please fill in complete information for product ID, name, price, and quantity.");
+                continue; // Tiếp tục vòng lặp để yêu cầu người dùng nhập lại
             }
+
             try {
                 int newId = Integer.parseInt(idText);
                 double newPrice = Double.parseDouble(priceText);
                 int newQuantity = Integer.parseInt(quantityText);
 
                 // Kiểm tra trùng ID, ngoại trừ sản phẩm hiện tại đang chỉnh sửa
+                boolean isDuplicate = false;
                 for (Product p : productList) {
                     if (p.getId() == newId && p != product) {
-                        showError("Duplicate ID", "Product ID already exists. Please enter a different ID.");
+                        isDuplicate = true;
+                        break; // Nếu phát hiện ID trùng, thoát khỏi vòng lặp kiểm tra
                     }
+                }
+
+                if (isDuplicate) {
+                    showError("Duplicate ID", "Product ID already exists. Please enter a different ID.");
+                    continue; // Nếu ID bị trùng, tiếp tục vòng lặp mà không cập nhật sản phẩm
                 }
 
                 // Nếu không có lỗi, cập nhật thông tin sản phẩm
