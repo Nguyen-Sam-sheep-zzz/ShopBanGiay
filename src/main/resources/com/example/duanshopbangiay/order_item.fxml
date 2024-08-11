@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+
+<?import javafx.scene.control.Button?>
+<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.duanshopbangiay.OrderItemController" spacing="10">
+    <Label fx:id="orderIdLabel" text="Order ID" />
+    <Label fx:id="customerNameLabel" text="Customer Name" />
+    <Label fx:id="orderDateLabel" text="Order Date" />
+    <Label fx:id="totalAmountLabel" text="Total Amount" />
+    <Label fx:id="statusLabel" text="Status" />
+</HBox>
+<VBox fx:id="productsContainer" spacing="5">
+<!-- Sản phẩm sẽ được thêm vào đây -->
+
+</VBox>
+<HBox spacing="10">
+<Button fx:id="paidButton" text="Đã thanh toán" />
+<Button fx:id="cancelButton" text="Hủy đơn" />
+</HBox>
+        </VBox>
