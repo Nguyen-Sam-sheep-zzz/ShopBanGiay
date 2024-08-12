@@ -15,18 +15,18 @@ import javafx.util.Callback;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.Optional;
+
 public class ProductListController {
 
     private Stage stage;
     private Scene scene;
-    private int nextId = 1; // Biến để tự động tăng ID cho sản phẩm mới
 
     @FXML
     private TableView<Product> productTableView;
     @FXML
-    private TableColumn<Product, Integer> idColumn; // Cột ID
+    private TableColumn<Product, Integer> idColumn;
     @FXML
     private TableColumn<Product, String> nameColumn;
     @FXML
@@ -34,10 +34,10 @@ public class ProductListController {
     @FXML
     private TableColumn<Product, Integer> quantityColumn;
     @FXML
-    private TableColumn<Product, Void> actionsColumn; // Cột hành động
+    private TableColumn<Product, Void> actionsColumn;
 
     @FXML
-    private TextField idField; // Trường ID
+    private TextField idField;
     @FXML
     private TextField nameField;
     @FXML
@@ -49,20 +49,30 @@ public class ProductListController {
 
     @FXML
     public void initialize() {
-        productList = FXCollections.observableArrayList(
-                new Product(nextId++, "Gucci", 19.99, 10),
-                new Product(nextId++, "Nike", 29.99, 5),
-                new Product(nextId++, "Dior", 15.49, 20)
-        );
+        productList = FXCollections.observableArrayList();
+        loadProductsFromFile(); // Tải sản phẩm từ file khi khởi động
 
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id")); // Thiết lập cột ID
+        // Kiểm tra nếu không có sản phẩm nào trong danh sách, thêm sản phẩm mặc định
+        if (productList.isEmpty()) {
+            addDefaultProducts();
+        }
+
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
-        // Thiết lập cột Actions để chứa các nút Edit và Remove
         actionsColumn.setCellFactory(getActionsCellFactory());
         productTableView.setItems(productList);
+    }
+
+    private void addDefaultProducts() {
+        // Thêm sản phẩm mặc định vào danh sách
+        productList.add(new Product(1, "Gucci", 500000, 10));
+        productList.add(new Product(2, "Nike", 1000000, 5));
+        productList.add(new Product(3, "Dior", 300000, 8));
+        productList.add(new Product(4, "Adidas", 800000, 6));
+        productList.add(new Product(5, "Converse", 90000000, 9));
     }
 
     private Callback<TableColumn<Product, Void>, TableCell<Product, Void>> getActionsCellFactory() {
@@ -122,19 +132,17 @@ public class ProductListController {
         stage.setScene(scene);
         stage.show();
     }
+
     private void showEditProductDialog(Product product) {
         while (true) {
-            // Tạo một dialog mới
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setTitle("Edit Product");
 
-            // Tạo các trường nhập liệu
             TextField idField = new TextField(String.valueOf(product.getId()));
             TextField nameField = new TextField(product.getName());
             TextField priceField = new TextField(String.valueOf(product.getPrice()));
             TextField quantityField = new TextField(String.valueOf(product.getQuantity()));
 
-            // Tạo một lưới (GridPane) để bố trí các trường nhập liệu
             GridPane grid = new GridPane();
             grid.setHgap(10);
             grid.setVgap(10);
@@ -148,28 +156,22 @@ public class ProductListController {
             grid.add(quantityField, 1, 3);
 
             dialog.getDialogPane().setContent(grid);
-
-            // Thêm các nút OK và Cancel
             dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
-            // Hiển thị dialog và kiểm tra kết quả
             Optional<ButtonType> result = dialog.showAndWait();
 
-            // Kiểm tra nếu người dùng nhấn Cancel
             if (result.isPresent() && result.get() == ButtonType.CANCEL) {
-                break; // Nếu người dùng nhấn Cancel, thoát khỏi vòng lặp
+                break;
             }
 
-            // Xử lý sự kiện khi nhấn OK
             String idText = idField.getText();
             String name = nameField.getText();
             String priceText = priceField.getText();
             String quantityText = quantityField.getText();
 
-            // Kiểm tra trường nhập liệu có bị bỏ trống không
             if (idText.isEmpty() || name.isEmpty() || priceText.isEmpty() || quantityText.isEmpty()) {
                 showError("Invalid information", "Please fill in complete information for product ID, name, price, and quantity.");
-                continue; // Tiếp tục vòng lặp để yêu cầu người dùng nhập lại
+                continue;
             }
 
             try {
@@ -177,30 +179,27 @@ public class ProductListController {
                 double newPrice = Double.parseDouble(priceText);
                 int newQuantity = Integer.parseInt(quantityText);
 
-                // Kiểm tra trùng ID, ngoại trừ sản phẩm hiện tại đang chỉnh sửa
                 boolean isDuplicate = false;
                 for (Product p : productList) {
                     if (p.getId() == newId && p != product) {
                         isDuplicate = true;
-                        break; // Nếu phát hiện ID trùng, thoát khỏi vòng lặp kiểm tra
+                        break;
                     }
                 }
 
                 if (isDuplicate) {
                     showError("Duplicate ID", "Product ID already exists. Please enter a different ID.");
-                    continue; // Nếu ID bị trùng, tiếp tục vòng lặp mà không cập nhật sản phẩm
+                    continue;
                 }
 
-                // Nếu không có lỗi, cập nhật thông tin sản phẩm
                 product.setId(newId);
                 product.setName(name);
                 product.setPrice(newPrice);
                 product.setQuantity(newQuantity);
-                productTableView.refresh(); // Cập nhật bảng
-                break; // Thoát khỏi vòng lặp nếu dữ liệu hợp lệ
+                productTableView.refresh();
+                break;
             } catch (NumberFormatException e) {
                 showError("Invalid information", "Please enter valid numbers for product ID, price, and quantity.");
-                // Nếu có lỗi, tiếp tục vòng lặp để yêu cầu người dùng nhập lại
             }
         }
     }
@@ -213,6 +212,7 @@ public class ProductListController {
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 productList.remove(product);
+                saveProductsToFile(); // Lưu lại sản phẩm sau khi xóa
             }
         });
     }
@@ -231,8 +231,6 @@ public class ProductListController {
 
         try {
             int id = Integer.parseInt(idText);
-
-            // Kiểm tra trùng ID
             for (Product product : productList) {
                 if (product.getId() == id) {
                     showError("Duplicate ID", "Product ID already exists. Please enter a different ID.");
@@ -244,6 +242,9 @@ public class ProductListController {
             int quantity = Integer.parseInt(quantityText);
             Product newProduct = new Product(id, name, price, quantity);
             productList.add(newProduct);
+
+            // Ghi sản phẩm mới vào file
+            saveProductsToFile();
 
             nameField.clear();
             priceField.clear();
@@ -265,8 +266,42 @@ public class ProductListController {
     private void showError(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
-        alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    private void loadProductsFromFile() {
+        File file = new File("products.txt");
+        if (!file.exists()) {
+            return; // Không có file thì không làm gì
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 4) {
+                    int id = Integer.parseInt(parts[0]);
+                    String name = parts[1];
+                    double price = Double.parseDouble(parts[2]);
+                    int quantity = Integer.parseInt(parts[3]);
+                    productList.add(new Product(id, name, price, quantity));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveProductsToFile() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("products.txt"))) {
+            for (Product product : productList) {
+                String line = product.getId() + "," + product.getName() + "," + product.getPrice() + "," + product.getQuantity();
+                bw.write(line);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
