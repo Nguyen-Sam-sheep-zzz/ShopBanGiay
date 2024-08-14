@@ -11,7 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,11 @@ public class RegisterController {
     private PasswordField confirmPasswordField;
 
     private static List<User> userList = new ArrayList<>();
+
+    // Static block to load users when the class is loaded
+    static {
+        loadUsers();
+    }
 
     @FXML
     private void handleRegisterButtonAction() {
@@ -44,8 +50,20 @@ public class RegisterController {
             return;
         }
 
+        // Check if username already exists
+        for (User user : userList) {
+            if (user.getUsername().equals(username)) {
+                showAlert(AlertType.ERROR, "Registration Error", "Username already exists. Please choose another one.");
+                return;
+            }
+        }
+
         User newUser = new User(username, password);
         userList.add(newUser);
+
+        // Save the new user immediately
+        saveUsers();
+
         showAlert(AlertType.INFORMATION, "Registration Successful!", "Welcome " + username + ", you can now log in with your new account.");
         clearFields();
     }
@@ -72,9 +90,35 @@ public class RegisterController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    // Save all users to file
+    private static void saveUsers() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("users.txt"))) {
+            for (User user : userList) {
+                writer.write(user.getUsername() + "," + user.getPassword());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Load users from file
+    private static void loadUsers() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 2) {
+                    userList.add(new User(parts[0], parts[1]));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static List<User> getUserList() {
         return userList;
     }
 }
-
-

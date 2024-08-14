@@ -5,16 +5,17 @@ public class Product {
     private String name;
     private double price;
     private int quantity;
+    private String imagePath; // Thêm thuộc tính cho đường dẫn hình ảnh
 
-    // Constructor
-    public Product(int id, String name, double price, int quantity) {
+    public Product(int id, String name, double price, int quantity, String imagePath) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
+        this.imagePath = imagePath;
     }
 
-    // Getters and setters
+    // Getters và setters
     public int getId() {
         return id;
     }
@@ -45,5 +46,13 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }

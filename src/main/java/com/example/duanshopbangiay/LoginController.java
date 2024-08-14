@@ -18,6 +18,7 @@ public class LoginController {
     @FXML
     private PasswordField password;
 
+
     private Stage stage;
 
     private Scene scene;
@@ -70,16 +71,23 @@ public class LoginController {
             if (!findUser(username).getRole().equals("admin")) {
                 alert.setContentText("Login successful hello user " + username);
                 alert.show();
+                Parent root = FXMLLoader.load(LoginApplication.class.getResource("UserShop.fxml"));
+                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                stage.setTitle("Shop");
+                stage.setScene(scene);
+                stage.show();
+
             } else {
                 alert.setContentText("Login successful hello admin " + username);
                 alert.show();
+                Parent root = FXMLLoader.load(LoginApplication.class.getResource("DisplayShop.fxml"));
+                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                stage.setTitle("Shop");
+                stage.setScene(scene);
+                stage.show();
             }
-            Parent root = FXMLLoader.load(LoginApplication.class.getResource("DisplayShop.fxml"));
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setTitle("Shop");
-            stage.setScene(scene);
-            stage.show();
         }
     }
 

@@ -1,21 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
-<VBox prefHeight="224.0" prefWidth="308.0" spacing="20" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.duanshopbangiay.LoginController">
-    <HBox alignment="CENTER">
-        <VBox.margin>
-            <Insets top="55" right="0" bottom="0" left="0"/>
-        </VBox.margin>
-        <Label text="Username : " />
-        <TextField fx:id="username" />
-    </HBox>
-    <HBox alignment="CENTER">
-        <Label text="Password : " />
-        <PasswordField fx:id="password" />
-    </HBox>
-    <HBox alignment="CENTER" prefHeight="26.0" prefWidth="237.0" spacing="20">
-        <Button onAction="#switchToDisplayShop" text="Login" />
-        <Button onAction="#switchToRegister" text="Register" />
-    </HBox>
-</VBox>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.duanshopbangiay.LoginController">
+    <left>
+        <AnchorPane prefHeight="407.0" prefWidth="228.0" style="-fx-background-color: #263F73;" BorderPane.alignment="CENTER">
+            <children>
+                <Label alignment="CENTER" layoutX="2.0" layoutY="152.0" prefHeight="21.0" prefWidth="243.0" text="Nike" textFill="#f8f6f6">
+                    <font>
+                        <Font name="Verdana Bold" size="24.0" />
+                    </font>
+                    <effect>
+                        <DropShadow />
+                    </effect>
+                </Label>
+                <Label alignment="CENTER" layoutX="2.0" layoutY="200.0" prefHeight="26.0" prefWidth="242.0" text="Just do it" textFill="#f8f6f6">
+                    <font>
+                        <Font name="Candara" size="22.0" />
+                    </font>
+                    <effect>
+                        <DropShadow />
+                    </effect>
+                </Label>
+                <Line endX="107.0" layoutX="103.0" layoutY="191.0" startX="-64.0" stroke="#f2f2f2" strokeWidth="2.0">
+                    <effect>
+                        <DropShadow />
+                    </effect>
+                </Line>
+                <Circle fill="TRANSPARENT" layoutX="124.0" layoutY="191.0" radius="100.0" stroke="#8a74743d" strokeType="INSIDE" />
+                <Circle fill="#e6eef5" layoutX="68.0" layoutY="108.0" radius="17.0" stroke="#686161" strokeType="INSIDE">
+                    <effect>
+                        <InnerShadow />
+                    </effect>
+                </Circle>
+            </children>
+        </AnchorPane>
+    </left>
+    <right>
+        <AnchorPane prefHeight="400.0" prefWidth="332.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label alignment="CENTER" layoutX="2.0" layoutY="41.0" prefHeight="30.0" prefWidth="273.0" text="Login" textFill="#464242">
+                    <font>
+                        <Font name="Times New Roman Bold" size="24.0" />
+                    </font>
+                </Label>
+                <Label alignment="CENTER" layoutX="14.0" layoutY="119.0" prefHeight="26.0" prefWidth="83.0" text="Username :" textFill="#141414">
+                    <font>
+                        <Font name="Candara" size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="username" layoutX="99.0" layoutY="117.0" prefHeight="31.0" prefWidth="162.0" promptText="Username" />
+                <Label alignment="CENTER" layoutX="14.0" layoutY="164.0" prefHeight="26.0" prefWidth="83.0" text=" Password :" textFill="#403e3e">
+                    <font>
+                        <Font name="Candara" size="14.0" />
+                    </font>
+                </Label>
+                <PasswordField fx:id="password" layoutX="99.0" layoutY="163.0" prefHeight="31.0" prefWidth="164.0" promptText="Password" />
+                <Button alignment="CENTER" layoutX="42.0" layoutY="237.0" mnemonicParsing="false" onAction="#switchToDisplayShop" prefHeight="37.0" prefWidth="198.0" style="-fx-background-color: #263F73;" text="Login" textFill="#e5e5eb" />
+                <Button alignment="CENTER" layoutX="42.0" layoutY="288.0" mnemonicParsing="false" onAction="#switchToRegister" prefHeight="37.0" prefWidth="198.0" style="-fx-background-color: #263F73;" text="Register" textFill="#e5e5eb" />
+            </children>
+        </AnchorPane>
+    </right>
+</BorderPane>
