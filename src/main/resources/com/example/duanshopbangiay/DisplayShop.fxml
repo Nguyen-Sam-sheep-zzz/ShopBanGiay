@@ -3,7 +3,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.duanshopbangiay.ProductListController"
@@ -14,13 +13,14 @@
         <Button onAction="#switchToOrderList" text="List of orders" prefWidth="100"/>
     </HBox>
 
-    <TableView fx:id="productTableView" prefWidth="616" maxWidth="616">
+    <TableView fx:id="productTableView" prefWidth="766" maxWidth="766">
         <columns>
             <TableColumn fx:id="idColumn" text="ID" prefWidth="100"/>
-            <TableColumn fx:id="nameColumn" text="Product Name" prefWidth="100"/>
+            <TableColumn fx:id="nameColumn" text="Product Name" prefWidth="150"/>
             <TableColumn fx:id="imageColumn" text="Image" prefWidth="100"/>
             <TableColumn fx:id="priceColumn" text="Price" prefWidth="100"/>
             <TableColumn fx:id="quantityColumn" text="Quantity" prefWidth="100"/>
+            <TableColumn fx:id="colorColumn" text="Color" prefWidth="100"/> <!-- Cột cho màu sắc -->
             <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="116"/>
         </columns>
     </TableView>

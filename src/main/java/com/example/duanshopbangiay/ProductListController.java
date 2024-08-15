@@ -37,6 +37,8 @@ public class ProductListController {
     @FXML
     private TableColumn<Product, Integer> quantityColumn;
     @FXML
+    private TableColumn<Product, String> colorColumn; // Thêm cột cho màu sắc
+    @FXML
     private TableColumn<Product, String> imageColumn; // Thêm cột cho hình ảnh
     @FXML
     private TableColumn<Product, Void> actionsColumn;
@@ -57,6 +59,7 @@ public class ProductListController {
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        colorColumn.setCellValueFactory(new PropertyValueFactory<>("color")); // Đặt giá trị cho cột màu sắc
         imageColumn.setCellValueFactory(new PropertyValueFactory<>("imagePath")); // Đặt giá trị cho cột hình ảnh
 
         imageColumn.setCellFactory(col -> new TableCell<>() {
@@ -82,12 +85,95 @@ public class ProductListController {
     }
 
     private void addDefaultProducts() {
-        productList.add(new Product(1, "Gucci", 500000, 10, "C:\\Users\\SAM\\Downloads\\picLennin\\nike-5418992_640.jpg"));
-        productList.add(new Product(2, "Nike", 1000000, 5, "C:\\Users\\SAM\\Downloads\\picLennin\\nike-5644799_640.jpg"));
-        productList.add(new Product(3, "Dior", 300000, 8, "C:\\Users\\SAM\\Downloads\\picLennin\\pexels-photo-2385477.jpeg"));
-        productList.add(new Product(4, "Adidas", 800000, 6, "C:\\Users\\SAM\\Downloads\\picLennin\\shoes-6336173_640.jpg"));
-        productList.add(new Product(5, "Converse", 900000, 9, "C:\\Users\\SAM\\Downloads\\picLennin\\sneakers-5979353_640.jpg"));
+        productList.add(new Product(1, "Gucci", 500000, 10, "Red", "C:\\Users\\SAM\\IdeaProjects\\DuAnShopBanGiay\\src\\main\\resources\\img\\banana.png"));
+        productList.add(new Product(2, "Nike", 1000000, 5, "Blue", "C:\\Users\\SAM\\Downloads\\picLennin\\nike-5644799_640.jpg"));
+        productList.add(new Product(3, "Dior", 300000, 8, "Black", "C:\\Users\\SAM\\Downloads\\picLennin\\pexels-photo-2385477.jpeg"));
+        productList.add(new Product(4, "Adidas", 800000, 6, "White", "C:\\Users\\SAM\\Downloads\\picLennin\\shoes-6336173_640.jpg"));
+        productList.add(new Product(5, "Converse", 900000, 9, "Green", "C:\\Users\\SAM\\Downloads\\picLennin\\sneakers-5979353_640.jpg"));
     }
+    @FXML
+    public void addProduct() {
+        while (true) {
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle("Add Product");
+
+            TextField idField = new TextField();
+            TextField nameField = new TextField();
+            TextField priceField = new TextField();
+            TextField quantityField = new TextField();
+            TextField colorField = new TextField(); // Thêm trường nhập cho màu sắc
+            TextField imageField = new TextField(); // Thêm trường nhập cho đường dẫn hình ảnh
+            Button uploadImageButton = new Button("Upload Image");
+
+            uploadImageButton.setOnAction(e -> {
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+                File file = fileChooser.showOpenDialog(dialog.getDialogPane().getScene().getWindow());
+                if (file != null) {
+                    imageField.setText(file.getAbsolutePath());
+                }
+            });
+
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.add(new Label("Product ID:"), 0, 0);
+            grid.add(idField, 1, 0);
+            grid.add(new Label("Product Name:"), 0, 1);
+            grid.add(nameField, 1, 1);
+            grid.add(new Label("Product Price:"), 0, 2);
+            grid.add(priceField, 1, 2);
+            grid.add(new Label("Product Quantity:"), 0, 3);
+            grid.add(quantityField, 1, 3);
+            grid.add(new Label("Product Color:"), 0, 4); // Thêm nhãn cho màu sắc
+            grid.add(colorField, 1, 4); // Thêm trường nhập cho màu sắc
+            grid.add(new Label("Image Path:"), 0, 5);
+            grid.add(imageField, 1, 5);
+            grid.add(uploadImageButton, 1, 6); // Nút tải ảnh lên
+
+            dialog.getDialogPane().setContent(grid);
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+            Optional<ButtonType> result = dialog.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.CANCEL) {
+                break;
+            }
+
+            String idText = idField.getText();
+            String name = nameField.getText();
+            String priceText = priceField.getText();
+            String quantityText = quantityField.getText();
+            String color = colorField.getText(); // Lấy màu sắc
+            String imagePath = imageField.getText(); // Lấy đường dẫn hình ảnh
+
+            if (idText.isEmpty() || name.isEmpty() || priceText.isEmpty() || quantityText.isEmpty() || color.isEmpty() || imagePath.isEmpty()) {
+                showError("Invalid information", "Please fill in complete information for product ID, name, price, quantity, color, and image path.");
+                continue;
+            }
+
+            try {
+                int id = Integer.parseInt(idText);
+                double price = Double.parseDouble(priceText);
+                int quantity = Integer.parseInt(quantityText);
+
+                boolean idExists = productList.stream().anyMatch(p -> p.getId() == id);
+                if (idExists) {
+                    showError("Duplicate ID", "A product with this ID already exists.");
+                    continue;
+                }
+
+                Product newProduct = new Product(id, name, price, quantity, color, imagePath);
+                productList.add(newProduct);
+                saveProductsToFile(); // Lưu sản phẩm vào file
+                productTableView.refresh();
+                break;
+            } catch (NumberFormatException e) {
+                showError("Invalid data", "Please enter valid numeric values for price and quantity.");
+            }
+        }
+    }
+
 
     private Callback<TableColumn<Product, Void>, TableCell<Product, Void>> getActionsCellFactory() {
         return col -> new TableCell<>() {
@@ -156,6 +242,7 @@ public class ProductListController {
             TextField nameField = new TextField(product.getName());
             TextField priceField = new TextField(String.valueOf(product.getPrice()));
             TextField quantityField = new TextField(String.valueOf(product.getQuantity()));
+            TextField colorField = new TextField(product.getColor()); // Thêm trường nhập cho màu sắc
             TextField imageField = new TextField(product.getImagePath()); // Thêm trường nhập cho đường dẫn hình ảnh
             Button uploadImageButton = new Button("Upload Image");
 
@@ -179,9 +266,11 @@ public class ProductListController {
             grid.add(priceField, 1, 2);
             grid.add(new Label("Product Quantity:"), 0, 3);
             grid.add(quantityField, 1, 3);
-            grid.add(new Label("Image Path:"), 0, 4);
-            grid.add(imageField, 1, 4);
-            grid.add(uploadImageButton, 1, 5); // Nút tải ảnh lên
+            grid.add(new Label("Product Color:"), 0, 4); // Thêm nhãn cho màu sắc
+            grid.add(colorField, 1, 4); // Thêm trường nhập cho màu sắc
+            grid.add(new Label("Image Path:"), 0, 5);
+            grid.add(imageField, 1, 5);
+            grid.add(uploadImageButton, 1, 6); // Nút tải ảnh lên
 
             dialog.getDialogPane().setContent(grid);
             dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -196,10 +285,11 @@ public class ProductListController {
             String name = nameField.getText();
             String priceText = priceField.getText();
             String quantityText = quantityField.getText();
+            String color = colorField.getText(); // Lấy màu sắc
             String imagePath = imageField.getText(); // Lấy đường dẫn hình ảnh
 
-            if (idText.isEmpty() || name.isEmpty() || priceText.isEmpty() || quantityText.isEmpty() || imagePath.isEmpty()) {
-                showError("Invalid information", "Please fill in complete information for product ID, name, price, quantity, and image path.");
+            if (idText.isEmpty() || name.isEmpty() || priceText.isEmpty() || quantityText.isEmpty() || color.isEmpty() || imagePath.isEmpty()) {
+                showError("Invalid information", "Please fill in complete information for product ID, name, price, quantity, color, and image path.");
                 continue;
             }
 
@@ -210,103 +300,36 @@ public class ProductListController {
 
                 boolean idExists = productList.stream().anyMatch(p -> p.getId() == id && p != product);
                 if (idExists) {
-                    showError("Duplicate ID", "The product ID already exists. Please enter a unique ID.");
+                    showError("Duplicate ID", "A product with this ID already exists.");
                     continue;
                 }
+
                 product.setId(id);
                 product.setName(name);
                 product.setPrice(price);
                 product.setQuantity(quantity);
+                product.setColor(color); // Cập nhật màu sắc
                 product.setImagePath(imagePath); // Cập nhật đường dẫn hình ảnh
-
-                productTableView.refresh(); // Làm mới bảng
+                saveProductsToFile(); // Lưu sản phẩm vào file
+                productTableView.refresh();
                 break;
-
             } catch (NumberFormatException e) {
-                showError("Invalid input", "Please enter valid numbers for price and quantity.");
+                showError("Invalid data", "Please enter valid numeric values for price and quantity.");
             }
         }
     }
 
-    @FXML
-    private void addProduct() {
-        while (true) {
-            Dialog<ButtonType> dialog = new Dialog<>();
-            dialog.setTitle("Add Product");
+    private void showConfirmationDialog(Product product) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Remove Product");
+        alert.setHeaderText("Are you sure you want to remove this product?");
+        alert.setContentText("Product Name: " + product.getName());
 
-            TextField idField = new TextField();
-            TextField nameField = new TextField();
-            TextField priceField = new TextField();
-            TextField quantityField = new TextField();
-            TextField imageField = new TextField();
-            Button uploadImageButton = new Button("Upload Image");
-
-            uploadImageButton.setOnAction(e -> {
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
-                File file = fileChooser.showOpenDialog(dialog.getDialogPane().getScene().getWindow());
-                if (file != null) {
-                    imageField.setText(file.getAbsolutePath());
-                }
-            });
-
-            GridPane grid = new GridPane();
-            grid.setHgap(10);
-            grid.setVgap(10);
-            grid.add(new Label("Product ID:"), 0, 0);
-            grid.add(idField, 1, 0);
-            grid.add(new Label("Product Name:"), 0, 1);
-            grid.add(nameField, 1, 1);
-            grid.add(new Label("Product Price:"), 0, 2);
-            grid.add(priceField, 1, 2);
-            grid.add(new Label("Product Quantity:"), 0, 3);
-            grid.add(quantityField, 1, 3);
-            grid.add(new Label("Image Path:"), 0, 4);
-            grid.add(imageField, 1, 4);
-            grid.add(uploadImageButton, 1, 5);
-
-            dialog.getDialogPane().setContent(grid);
-            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-
-            Optional<ButtonType> result = dialog.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.CANCEL) {
-                break;
-            }
-
-            String idText = idField.getText();
-            String name = nameField.getText();
-            String priceText = priceField.getText();
-            String quantityText = quantityField.getText();
-            String imagePath = imageField.getText();
-
-            if (idText.isEmpty() || name.isEmpty() || priceText.isEmpty() || quantityText.isEmpty() || imagePath.isEmpty()) {
-                showError("Invalid information", "Please fill in complete information for product ID, name, price, quantity, and image path.");
-                continue;
-            }
-
-            try {
-                int id = Integer.parseInt(idText);
-                double price = Double.parseDouble(priceText);
-                int quantity = Integer.parseInt(quantityText);
-
-                boolean idExists = productList.stream().anyMatch(p -> p.getId() == id);
-                if (idExists) {
-                    showError("Duplicate ID", "The product ID already exists. Please enter a unique ID.");
-                    continue;
-                }
-
-                Product newProduct = new Product(id, name, price, quantity, imagePath);
-                productList.add(newProduct);
-                productTableView.refresh(); // Làm mới bảng
-
-                // Gọi hàm lưu dữ liệu ngay sau khi thêm sản phẩm
-                saveProductsToFile();
-
-                break;
-
-            } catch (NumberFormatException e) {
-                showError("Invalid input", "Please enter valid numbers for price and quantity.");
-            }
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            productList.remove(product);
+            saveProductsToFile(); // Lưu sản phẩm vào file sau khi xóa
+            productTableView.refresh();
         }
     }
 
@@ -318,71 +341,37 @@ public class ProductListController {
         alert.showAndWait();
     }
 
-    private void showConfirmationDialog(Product product) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm Deletion");
-        alert.setHeaderText("Are you sure you want to delete this product?");
-        alert.setContentText("Product Name: " + product.getName());
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            productList.remove(product);
-            productTableView.refresh(); // Làm mới bảng
-
-            // Gọi phương thức lưu dữ liệu sau khi xóa sản phẩm
-            saveProductsToFile();
-        }
-    }
-
     private void loadProductsFromFile() {
         File file = new File("products.txt");
-        if (!file.exists()) {
-            return; // Nếu file không tồn tại, không làm gì cả
-        }
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length == 5) { // Kiểm tra xem có đủ 5 trường hay không
-                    int id = Integer.parseInt(parts[0]);
-                    String name = parts[1];
-                    double price = Double.parseDouble(parts[2]);
-                    int quantity = Integer.parseInt(parts[3]);
-                    String imagePath = parts[4];
-
-                    Product product = new Product(id, name, price, quantity, imagePath);
-                    productList.add(product);
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split(",");
+                    if (parts.length == 6) {
+                        int id = Integer.parseInt(parts[0]);
+                        String name = parts[1];
+                        double price = Double.parseDouble(parts[2]);
+                        int quantity = Integer.parseInt(parts[3]);
+                        String color = parts[4]; // Đọc màu sắc
+                        String imagePath = parts[5]; // Đọc đường dẫn hình ảnh
+                        productList.add(new Product(id, name, price, quantity, color, imagePath));
+                    }
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NumberFormatException e) {
-            showError("Invalid data format", "There was an error reading the product data.");
         }
     }
 
     private void saveProductsToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("products.txt"))) {
             for (Product product : productList) {
-                String line = String.join(",",
-                        String.valueOf(product.getId()),
-                        product.getName(),
-                        String.valueOf(product.getPrice()),
-                        String.valueOf(product.getQuantity()),
-                        product.getImagePath()
-                );
-                writer.write(line);
-                writer.newLine(); // Thêm dòng mới sau mỗi sản phẩm
+                writer.write(product.getId() + "," + product.getName() + "," + product.getPrice() + "," + product.getQuantity() + "," + product.getColor() + "," + product.getImagePath());
+                writer.newLine();
             }
         } catch (IOException e) {
             e.printStackTrace();
-            showError("Error saving data", "Could not save product data to file.");
         }
     }
-
-//    public void stop() {
-//        saveProductsToFile(); // Lưu sản phẩm khi đóng ứng dụng
-//    }
-
 }

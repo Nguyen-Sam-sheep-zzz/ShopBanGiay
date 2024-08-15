@@ -1,17 +1,25 @@
 package com.example.duanshopbangiay;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
     private int id;
     private String name;
     private double price;
     private int quantity;
-    private String imagePath; // Thêm thuộc tính cho đường dẫn hình ảnh
+    private String color; // Thêm thuộc tính màu
+    private String imagePath;
 
-    public Product(int id, String name, double price, int quantity, String imagePath) {
+    public Product() {
+
+    }
+
+    public Product(int id, String name, double price, int quantity, String color, String imagePath) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
+        this.color = color; // Cập nhật thuộc tính màu
         this.imagePath = imagePath;
     }
 
@@ -46,6 +54,14 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getColor() {
+        return color; // Getter cho màu
+    }
+
+    public void setColor(String color) {
+        this.color = color; // Setter cho màu
     }
 
     public String getImagePath() {

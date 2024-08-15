@@ -1,5 +1,0 @@
-1,Gucci,500000.0,10,C:\Users\SAM\Downloads\picLennin\nike-5418992_640.jpg
-2,Nike,1000000.0,5,C:\Users\SAM\Downloads\picLennin\nike-5644799_640.jpg
-3,Dior,300000.0,8,C:\Users\SAM\Downloads\picLennin\pexels-photo-2385477.jpeg
-4,Adidas,800000.0,6,C:\Users\SAM\Downloads\picLennin\shoes-6336173_640.jpg
-5,Sam,123.0,123,C:\Users\SAM\Downloads\picLennin\nike-5644799_640.jpg
