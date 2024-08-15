@@ -85,11 +85,12 @@ public class ProductListController {
     }
 
     private void addDefaultProducts() {
-        productList.add(new Product(1, "Gucci", 500000, 10, "Red", "C:\\Users\\SAM\\IdeaProjects\\DuAnShopBanGiay\\src\\main\\resources\\img\\banana.png"));
-        productList.add(new Product(2, "Nike", 1000000, 5, "Blue", "C:\\Users\\SAM\\Downloads\\picLennin\\nike-5644799_640.jpg"));
-        productList.add(new Product(3, "Dior", 300000, 8, "Black", "C:\\Users\\SAM\\Downloads\\picLennin\\pexels-photo-2385477.jpeg"));
-        productList.add(new Product(4, "Adidas", 800000, 6, "White", "C:\\Users\\SAM\\Downloads\\picLennin\\shoes-6336173_640.jpg"));
-        productList.add(new Product(5, "Converse", 900000, 9, "Green", "C:\\Users\\SAM\\Downloads\\picLennin\\sneakers-5979353_640.jpg"));
+        productList.add(new Product(1, "Jordan 1", 500, 10, "Red", "/img/Red-removebg-preview.png"));
+        productList.add(new Product(2, "Jordan 1", 100, 5, "Blue", "/img/MidN-removebg-preview.png"));
+        productList.add(new Product(3, "Jordan 1", 300, 8, "Yellow", "/img/YellowOriginal-removebg-preview.png"));
+        productList.add(new Product(4, "Jordan 1", 800, 6, "Pink", "/img/Pink-removebg-preview.png"));
+        productList.add(new Product(5, "Jordan 1", 900, 9, "Green", "/img/Green-removebg-preview.png"));
+        productList.add(new Product(6, "Jordan 1", 600, 9, "Orange", "/img/Orange-removebg-preview.png"));
     }
     @FXML
     public void addProduct() {

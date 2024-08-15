@@ -7,11 +7,11 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,22 +21,22 @@ import java.util.ResourceBundle;
 
 public class UserShopController implements Initializable {
     @FXML
-    private VBox chosenNikeCard;
+    private VBox chosenProductCard;
 
     @FXML
-    private Label nikeNameLable;
+    private ImageView productImg;
 
     @FXML
-    private Label nikePriceLable;
+    private Label productNameLabel;
 
     @FXML
-    private ImageView nikeImg;
-
-    @FXML
-    private ScrollPane scroll;
+    private Label productPriceLable;
 
     @FXML
     private GridPane grid;
+
+    @FXML
+    private ScrollPane scroll;
 
     private List<Product> products = new ArrayList<>();
 
@@ -44,83 +44,74 @@ public class UserShopController implements Initializable {
 
     private MyListener myListener;
 
-
     private List<Product> getData() {
         List<Product> products = new ArrayList<>();
         Product product;
 
         product = new Product();
-        product.setId(10);
-        product.setName("Jordan1");
-        product.setPrice(20);
+        product.setId(9);
+        product.setName("Jordan 1");
+        product.setPrice(300);
         product.setQuantity(20);
         product.setColor("6A7324");
         product.setImagePath("/img/Green-removebg-preview.png");
         products.add(product);
 
         product = new Product();
-        product.setId(10);
-        product.setName("Jordan1");
-        product.setPrice(20);
+        product.setId(9);
+        product.setName("Jordan 1");
+        product.setPrice(300);
         product.setQuantity(20);
-        product.setColor("6A7324");
-        product.setImagePath("C:\\Users\\SAM\\IdeaProjects\\DuAnShopBanGiay\\src\\main\\resources\\img\\Green-removebg-preview.png");
+        product.setColor("00008B");
+        product.setImagePath("/img/MidN-removebg-preview.png");
         products.add(product);
 
         product = new Product();
-        product.setId(10);
-        product.setName("Jordan1");
-        product.setPrice(20);
+        product.setId(9);
+        product.setName("Jordan 1");
+        product.setPrice(300);
         product.setQuantity(20);
-        product.setColor("A7745B");
-        product.setImagePath("C:\\Users\\SAM\\IdeaProjects\\DuAnShopBanGiay\\src\\main\\resources\\img\\Red-removebg-preview.png");
+        product.setColor("#D2691E");
+        product.setImagePath("/img/Orange-removebg-preview.png");
         products.add(product);
 
         product = new Product();
-        product.setId(10);
-        product.setName("Jordan1");
-        product.setPrice(20);
+        product.setId(9);
+        product.setName("Jordan 1");
+        product.setPrice(300);
         product.setQuantity(20);
-        product.setColor("F16C31");
-        product.setImagePath("C:\\Users\\SAM\\IdeaProjects\\DuAnShopBanGiay\\src\\main\\resources\\img\\Pink-removebg-preview.png");
+        product.setColor("FF6699");
+        product.setImagePath("/img/Pink-removebg-preview.png");
         products.add(product);
 
         product = new Product();
-        product.setId(10);
-        product.setName("Jordan1");
-        product.setPrice(20);
+        product.setId(9);
+        product.setName("Jordan 1");
+        product.setPrice(300);
         product.setQuantity(20);
-        product.setColor("291D36");
-        product.setImagePath("C:\\Users\\SAM\\IdeaProjects\\DuAnShopBanGiay\\src\\main\\resources\\img\\YellowOriginal-removebg-preview.png");
+        product.setColor("B22222");
+        product.setImagePath("/img/Red-removebg-preview.png");
         products.add(product);
 
         product = new Product();
-        product.setId(10);
-        product.setName("Jordan1");
-        product.setPrice(20);
+        product.setId(9);
+        product.setName("Jordan 1");
+        product.setPrice(300);
         product.setQuantity(20);
-        product.setColor("22371D");
-        product.setImagePath("C:\\Users\\SAM\\IdeaProjects\\DuAnShopBanGiay\\src\\main\\resources\\img\\MidN-removebg-preview.png");
+        product.setColor("FFB605");
+        product.setImagePath("/img/YellowOriginal-removebg-preview.png");
         products.add(product);
 
-        product = new Product();
-        product.setId(10);
-        product.setName("Jordan1");
-        product.setPrice(20);
-        product.setQuantity(20);
-        product.setColor("FB5D03");
-        product.setImagePath("C:\\Users\\SAM\\IdeaProjects\\DuAnShopBanGiay\\src\\main\\resources\\img\\Orange-removebg-preview.png");
-        products.add(product);
 
         return products;
     }
 
     private void setChosenProduct(Product product) {
-        nikeNameLable.setText(product.getName());
-        nikePriceLable.setText(UserShopApplication.CURRENCY + product.getPrice());
-        nikeImg.setImage(image);
+        productNameLabel.setText(product.getName());
+        productPriceLable.setText(UserShopApplication.CURRENCY + product.getPrice());
         image = new Image(getClass().getResourceAsStream(product.getImagePath()));
-        chosenNikeCard.setStyle("-fx-background-color: #" + product.getColor() + ";\n" +
+        productImg.setImage(image);
+        chosenProductCard.setStyle("-fx-background-color: #" + product.getColor() + ";\n" +
                 "    -fx-background-radius: 30;");
     }
 
@@ -138,18 +129,20 @@ public class UserShopController implements Initializable {
             };
         }
         int column = 0;
-        int row = 0;
+        int row = 1;
         try {
             for (int i = 0; i < products.size(); i++) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("/views/Item.fxml"));
+                fxmlLoader.setLocation(getClass().getResource("item.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
+
                 ItemController itemController = fxmlLoader.getController();
-                itemController.setData(products.get(i), myListener);
+                itemController.setData(products.get(i),myListener);
 
                 if (column == 3) {
                     column = 0;
                     row++;
+
                 }
 
                 grid.add(anchorPane, column++, row);
@@ -162,7 +155,6 @@ public class UserShopController implements Initializable {
                 grid.setMinHeight(Region.USE_COMPUTED_SIZE);
                 grid.setPrefHeight(Region.USE_COMPUTED_SIZE);
                 grid.setMaxHeight(Region.USE_PREF_SIZE);
-
                 GridPane.setMargin(anchorPane, new Insets(10));
             }
         } catch (IOException e) {
@@ -170,4 +162,3 @@ public class UserShopController implements Initializable {
         }
     }
 }
-

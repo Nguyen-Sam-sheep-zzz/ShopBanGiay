@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="1315.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="1315.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.duanshopbangiay.UserShopController">
    <children>
       <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
@@ -55,19 +55,19 @@
                      </styleClass>
                   </HBox>
                   <Pane prefHeight="57.0" prefWidth="435.0" />
-                  <VBox fx:id="chosenNikeCard" alignment="CENTER" prefHeight="535.0" prefWidth="100.0">
+                  <VBox fx:id="chosenProductCard" alignment="CENTER" prefHeight="535.0" prefWidth="100.0">
                      <VBox.margin>
                         <Insets left="50.0" right="50.0" />
                      </VBox.margin>
                      <children>
                         <HBox prefHeight="57.0" prefWidth="335.0">
                            <children>
-                              <Label fx:id="nikeNameLable" prefHeight="51.0" prefWidth="265.0" text="Jordan 1" textFill="#f5f2f2">
+                              <Label fx:id="productNameLabel" prefHeight="51.0" prefWidth="265.0" text="Jordan 1" textFill="#f5f2f2">
                                  <font>
                                     <Font name="Cambria" size="36.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="nikePriceLable" layoutX="10.0" layoutY="10.0" prefHeight="51.0" prefWidth="172.0" text="\$ 500" textFill="#f5f2f2">
+                              <Label fx:id="productPriceLable" layoutX="10.0" layoutY="10.0" prefHeight="51.0" prefWidth="172.0" text="\$ 500" textFill="#f5f2f2">
                                  <font>
                                     <Font name="Cambria" size="36.0" />
                                  </font>
@@ -77,7 +77,7 @@
                               <Insets left="20.0" top="30.0" />
                            </VBox.margin>
                         </HBox>
-                        <ImageView fx:id="nikeImg" fitHeight="170.0" fitWidth="285.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="productImg" fitHeight="170.0" fitWidth="285.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../../img/Orange-removebg-preview.png" />
                            </image>
@@ -145,7 +145,7 @@
          <center>
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox alignment="CENTER" prefHeight="65.0" prefWidth="200.0">
+                  <HBox alignment="CENTER" prefHeight="69.0" prefWidth="827.0">
                      <VBox.margin>
                         <Insets left="20.0" right="20.0" top="20.0" />
                      </VBox.margin>
@@ -172,19 +172,22 @@
                      <children>
                         <ScrollPane fx:id="scroll" prefHeight="570.0" prefWidth="785.0" styleClass="transparent" stylesheets="@Style.css">
                            <content>
-                              <GridPane fx:id="grid" prefHeight="8.0" prefWidth="30.0">
+                              <GridPane fx:id="grid" prefHeight="9.0" prefWidth="37.0">
                                  <rowConstraints>
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" />
                                  </rowConstraints>
                               </GridPane>
                            </content>
                            <HBox.margin>
-                              <Insets top="20.0" />
+                              <Insets left="10.0" top="80.0" />
                            </HBox.margin>
                         </ScrollPane>
                      </children>
                   </HBox>
                </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
             </VBox>
          </center>
       </BorderPane>
