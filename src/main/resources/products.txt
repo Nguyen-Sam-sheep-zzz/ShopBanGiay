@@ -1,0 +1,6 @@
+1,Jordan 1,500.0,10,B22222,/img/Red-remove-preview.png
+2,Jordan 1,100.0,5,00008B,/img/MidN-remove-preview.png
+3,Jordan 1,300.0,8,FFB605,/img/YellowOriginal-remove-preview.png
+4,Jordan 1,800.0,6,FF6699,/img/Pink-remove-preview.png
+5,Jordan 1,900.0,9,6A7324,/img/Green-remove-preview.png
+6,Jordan 1,600.0,9,D2691E,/img/Orange-remove-preview.png

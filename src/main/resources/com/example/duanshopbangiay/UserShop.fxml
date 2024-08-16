@@ -79,7 +79,7 @@
                         </HBox>
                         <ImageView fx:id="productImg" fitHeight="170.0" fitWidth="285.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../img/Orange-removebg-preview.png" />
+                              <Image url="@../../../img/Orange-remove-preview.png" />
                            </image>
                            <VBox.margin>
                               <Insets top="20.0" />
@@ -179,7 +179,7 @@
                               </GridPane>
                            </content>
                            <HBox.margin>
-                              <Insets left="10.0" top="80.0" />
+                              <Insets top="80.0" />
                            </HBox.margin>
                         </ScrollPane>
                      </children>

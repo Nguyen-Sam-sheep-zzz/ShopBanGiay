@@ -53,8 +53,8 @@ public class UserShopController implements Initializable {
         product.setName("Jordan 1");
         product.setPrice(300);
         product.setQuantity(20);
-        product.setColor("6A7324");
-        product.setImagePath("/img/Green-removebg-preview.png");
+        product.setColor("32CD32");
+        product.setImagePath("/img/Green-remove-preview.png");
         products.add(product);
 
         product = new Product();
@@ -63,7 +63,7 @@ public class UserShopController implements Initializable {
         product.setPrice(300);
         product.setQuantity(20);
         product.setColor("00008B");
-        product.setImagePath("/img/MidN-removebg-preview.png");
+        product.setImagePath("/img/MidN-remove-preview.png");
         products.add(product);
 
         product = new Product();
@@ -71,8 +71,8 @@ public class UserShopController implements Initializable {
         product.setName("Jordan 1");
         product.setPrice(300);
         product.setQuantity(20);
-        product.setColor("#D2691E");
-        product.setImagePath("/img/Orange-removebg-preview.png");
+        product.setColor("D2691E");
+        product.setImagePath("/img/Orange-remove-preview.png");
         products.add(product);
 
         product = new Product();
@@ -81,7 +81,7 @@ public class UserShopController implements Initializable {
         product.setPrice(300);
         product.setQuantity(20);
         product.setColor("FF6699");
-        product.setImagePath("/img/Pink-removebg-preview.png");
+        product.setImagePath("/img/Pink-remove-preview.png");
         products.add(product);
 
         product = new Product();
@@ -90,7 +90,7 @@ public class UserShopController implements Initializable {
         product.setPrice(300);
         product.setQuantity(20);
         product.setColor("B22222");
-        product.setImagePath("/img/Red-removebg-preview.png");
+        product.setImagePath("/img/Red-remove-preview.png");
         products.add(product);
 
         product = new Product();
@@ -99,7 +99,7 @@ public class UserShopController implements Initializable {
         product.setPrice(300);
         product.setQuantity(20);
         product.setColor("FFB605");
-        product.setImagePath("/img/YellowOriginal-removebg-preview.png");
+        product.setImagePath("/img/YellowOriginal-remove-preview.png");
         products.add(product);
 
 

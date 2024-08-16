@@ -1,6 +1,10 @@
 package com.example.duanshopbangiay;
 
+import javafx.scene.image.Image;
+
+import java.io.InputStream;
 import java.io.Serializable;
+import java.net.URL;
 
 public class Product implements Serializable {
     private int id;
@@ -70,5 +74,11 @@ public class Product implements Serializable {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public Image getImage() {
+        // Sử dụng getClass().getResource để lấy đường dẫn hình ảnh
+        InputStream imageStream = getClass().getResourceAsStream(imagePath);
+        return imageStream != null ? new Image(imageStream) : null;
     }
 }

@@ -46,7 +46,7 @@ public class ProductListController {
     private ObservableList<Product> productList;
 
     @FXML
-    public void initialize() {
+    private void initialize() {
         productList = FXCollections.observableArrayList();
         loadProductsFromFile(); // Tải sản phẩm từ file khi khởi động
 
@@ -60,9 +60,10 @@ public class ProductListController {
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         colorColumn.setCellValueFactory(new PropertyValueFactory<>("color")); // Đặt giá trị cho cột màu sắc
+
         imageColumn.setCellValueFactory(new PropertyValueFactory<>("imagePath")); // Đặt giá trị cho cột hình ảnh
 
-        imageColumn.setCellFactory(col -> new TableCell<>() {
+        imageColumn.setCellFactory(col -> new TableCell<Product, String>() {
             private final ImageView imageView = new ImageView();
 
             @Override
@@ -71,8 +72,16 @@ public class ProductListController {
                 if (empty || imagePath == null) {
                     setGraphic(null);
                 } else {
-                    Image image = new Image("file:" + imagePath); // Đảm bảo đường dẫn hình ảnh hợp lệ
-                    imageView.setImage(image);
+                    InputStream imageStream = getClass().getResourceAsStream(imagePath);
+                    if (imageStream == null) {
+                        System.err.println("Tệp hình ảnh không được tìm thấy: " + imagePath);
+                        // Cung cấp hình ảnh thay thế nếu cần
+                        imageStream = getClass().getResourceAsStream("/img/placeholder.png"); // Hình ảnh thay thế
+                    }
+                    if (imageStream != null) {
+                        Image image = new Image(imageStream);
+                        imageView.setImage(image);
+                    }
                     imageView.setFitWidth(50); // Đặt kích thước hình ảnh
                     imageView.setFitHeight(50);
                     setGraphic(imageView);
@@ -84,14 +93,16 @@ public class ProductListController {
         productTableView.setItems(productList);
     }
 
+
     private void addDefaultProducts() {
-        productList.add(new Product(1, "Jordan 1", 500, 10, "Red", "/img/Red-removebg-preview.png"));
-        productList.add(new Product(2, "Jordan 1", 100, 5, "Blue", "/img/MidN-removebg-preview.png"));
-        productList.add(new Product(3, "Jordan 1", 300, 8, "Yellow", "/img/YellowOriginal-removebg-preview.png"));
-        productList.add(new Product(4, "Jordan 1", 800, 6, "Pink", "/img/Pink-removebg-preview.png"));
-        productList.add(new Product(5, "Jordan 1", 900, 9, "Green", "/img/Green-removebg-preview.png"));
-        productList.add(new Product(6, "Jordan 1", 600, 9, "Orange", "/img/Orange-removebg-preview.png"));
+        productList.add(new Product(1, "Jordan 1 pine", 500, 10, "32CD32", "/img/Green-remove-preview.png"));
+        productList.add(new Product(2, "Jordan 1 ocean", 100, 5, "00008B", "/img/MidN-remove-preview.png"));
+        productList.add(new Product(3, "Jordan 1 happy", 300, 8, "D2691E", "/img/Orange-remove-preview.png"));
+        productList.add(new Product(4, "Jordan 1 rose", 800, 6, "FF6699", "/img/Pink-remove-preview.png"));
+        productList.add(new Product(5, "Jordan 1 R&W", 900, 9, "B22222", "/img/Red-remove-preview.png"));
+        productList.add(new Product(6, "Jordan 1 SSJ", 600, 9, "FFB605", "/img/YellowOriginal-remove-preview.png"));
     }
+
     @FXML
     public void addProduct() {
         while (true) {
@@ -356,7 +367,17 @@ public class ProductListController {
                         int quantity = Integer.parseInt(parts[3]);
                         String color = parts[4]; // Đọc màu sắc
                         String imagePath = parts[5]; // Đọc đường dẫn hình ảnh
-                        productList.add(new Product(id, name, price, quantity, color, imagePath));
+
+                        // Đảm bảo đường dẫn hình ảnh là tương đối từ thư mục resources/img
+                        if (!imagePath.startsWith("img/")) {
+                            imagePath = "img/" + imagePath;
+                        }
+
+                        // Tạo đường dẫn tài nguyên để JavaFX có thể truy cập
+                        String resourcePath = "/" + imagePath;
+
+                        // Thêm sản phẩm vào danh sách với đường dẫn tài nguyên
+                        productList.add(new Product(id, name, price, quantity, color, resourcePath));
                     }
                 }
             } catch (IOException e) {
