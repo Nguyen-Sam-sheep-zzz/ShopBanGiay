@@ -13,6 +13,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,9 +93,10 @@ public class RegisterController {
         alert.showAndWait();
     }
 
-    // Save all users to file
+    // Save all users to file with relative path
     private static void saveUsers() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("users.txt"))) {
+        Path path = Paths.get("src/main/resources/users.txt");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path.toFile()))) {
             for (User user : userList) {
                 writer.write(user.getUsername() + "," + user.getPassword());
                 writer.newLine();
@@ -103,9 +106,10 @@ public class RegisterController {
         }
     }
 
-    // Load users from file
+    // Load users from file with relative path
     private static void loadUsers() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
+        Path path = Paths.get("src/main/resources/users.txt");
+        try (BufferedReader reader = new BufferedReader(new FileReader(path.toFile()))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");

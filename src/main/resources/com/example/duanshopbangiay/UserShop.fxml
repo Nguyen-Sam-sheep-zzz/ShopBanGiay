@@ -64,12 +64,15 @@
                            <children>
                               <Label fx:id="productNameLabel" prefHeight="51.0" prefWidth="265.0" text="Jordan 1" textFill="#f5f2f2">
                                  <font>
-                                    <Font name="Cambria" size="36.0" />
+                                    <Font name="Cambria Bold" size="24.0" />
                                  </font>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
                               </Label>
                               <Label fx:id="productPriceLable" layoutX="10.0" layoutY="10.0" prefHeight="51.0" prefWidth="172.0" text="\$ 500" textFill="#f5f2f2">
                                  <font>
-                                    <Font name="Cambria" size="36.0" />
+                                    <Font name="Cambria Bold" size="24.0" />
                                  </font>
                               </Label>
                            </children>
@@ -172,14 +175,14 @@
                      <children>
                         <ScrollPane fx:id="scroll" prefHeight="570.0" prefWidth="785.0" styleClass="transparent" stylesheets="@Style.css">
                            <content>
-                              <GridPane fx:id="grid" prefHeight="9.0" prefWidth="37.0">
+                              <GridPane fx:id="grid" prefHeight="10.0" prefWidth="42.0">
                                  <rowConstraints>
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" />
                                  </rowConstraints>
                               </GridPane>
                            </content>
                            <HBox.margin>
-                              <Insets top="80.0" />
+                              <Insets left="42.0" top="80.0" />
                            </HBox.margin>
                         </ScrollPane>
                      </children>

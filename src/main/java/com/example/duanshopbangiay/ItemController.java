@@ -18,11 +18,6 @@ public class ItemController {
     @FXML
     private Label priceLable;
 
-    @FXML
-//    public void click (MouseEvent mouseEvent) {
-//        myListener.onClickListener(product);
-//    }
-
     private Product product;
 
     private MyListener myListener;

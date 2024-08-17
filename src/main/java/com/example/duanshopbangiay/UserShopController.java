@@ -12,12 +12,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 public class UserShopController implements Initializable {
     @FXML
@@ -43,65 +44,28 @@ public class UserShopController implements Initializable {
     private Image image;
 
     private MyListener myListener;
-
-    private List<Product> getData() {
+    private List<Product> loadProductsFromFile() {
         List<Product> products = new ArrayList<>();
-        Product product;
+        String filePath = "products.txt"; // Sử dụng đường dẫn tương đối hoặc tuyệt đối tùy theo cấu trúc dự án của bạn
 
-        product = new Product();
-        product.setId(9);
-        product.setName("Jordan 1");
-        product.setPrice(300);
-        product.setQuantity(20);
-        product.setColor("32CD32");
-        product.setImagePath("/img/Green-remove-preview.png");
-        products.add(product);
-
-        product = new Product();
-        product.setId(9);
-        product.setName("Jordan 1");
-        product.setPrice(300);
-        product.setQuantity(20);
-        product.setColor("00008B");
-        product.setImagePath("/img/MidN-remove-preview.png");
-        products.add(product);
-
-        product = new Product();
-        product.setId(9);
-        product.setName("Jordan 1");
-        product.setPrice(300);
-        product.setQuantity(20);
-        product.setColor("D2691E");
-        product.setImagePath("/img/Orange-remove-preview.png");
-        products.add(product);
-
-        product = new Product();
-        product.setId(9);
-        product.setName("Jordan 1");
-        product.setPrice(300);
-        product.setQuantity(20);
-        product.setColor("FF6699");
-        product.setImagePath("/img/Pink-remove-preview.png");
-        products.add(product);
-
-        product = new Product();
-        product.setId(9);
-        product.setName("Jordan 1");
-        product.setPrice(300);
-        product.setQuantity(20);
-        product.setColor("B22222");
-        product.setImagePath("/img/Red-remove-preview.png");
-        products.add(product);
-
-        product = new Product();
-        product.setId(9);
-        product.setName("Jordan 1");
-        product.setPrice(300);
-        product.setQuantity(20);
-        product.setColor("FFB605");
-        product.setImagePath("/img/YellowOriginal-remove-preview.png");
-        products.add(product);
-
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] fields = line.split(",");
+                if (fields.length == 6) {
+                    Product product = new Product();
+                    product.setId(Integer.parseInt(fields[0]));
+                    product.setName(fields[1]);
+                    product.setPrice(Double.parseDouble(fields[2]));
+                    product.setQuantity(Integer.parseInt(fields[3]));
+                    product.setColor(fields[4]);
+                    product.setImagePath(fields[5]);
+                    products.add(product);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return products;
     }
@@ -118,7 +82,7 @@ public class UserShopController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        products.addAll(getData());
+        products.addAll(loadProductsFromFile());
         if (products.size() > 0) {
             setChosenProduct(products.get(0));
             myListener = new MyListener() {
@@ -137,12 +101,11 @@ public class UserShopController implements Initializable {
                 AnchorPane anchorPane = fxmlLoader.load();
 
                 ItemController itemController = fxmlLoader.getController();
-                itemController.setData(products.get(i),myListener);
+                itemController.setData(products.get(i), myListener);
 
                 if (column == 3) {
                     column = 0;
                     row++;
-
                 }
 
                 grid.add(anchorPane, column++, row);
@@ -161,4 +124,5 @@ public class UserShopController implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
 }
