@@ -116,7 +116,7 @@ public class CartViewController {
         updateTotalAmount();
     }
 
-    private void updateTotalAmount() {
+    public void updateTotalAmount() {
         double total = cartItems.stream().mapToDouble(p -> p.getPrice() * p.getQuantity()).sum();
         totalAmountLabel.setText(String.format("$%.2f", total));
     }

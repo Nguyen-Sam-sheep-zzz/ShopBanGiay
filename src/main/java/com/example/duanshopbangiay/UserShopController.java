@@ -166,7 +166,8 @@ public class UserShopController implements Initializable {
                 AnchorPane cartView = cartViewLoader.load();
                 CartViewController controller = cartViewLoader.getController();
                 controller.setCart(cart);
-                controller.loadCartItemsFromFile(); // Đọc dữ liệu từ tệp khi mở
+                controller.loadCartItemsFromFile();// Đọc dữ liệu từ tệp khi mở
+                controller.updateTotalAmount();
 
                 cartViewStage = new Stage();
                 cartViewStage.setScene(new Scene(cartView));
@@ -177,6 +178,7 @@ public class UserShopController implements Initializable {
                     CartViewController cartController = cartViewLoader.getController();
                     if (cartController != null) {
                         cartController.saveCartToFile(); // Lưu dữ liệu khi cửa sổ đóng
+                        controller.updateTotalAmount();
                     }
                 });
 
