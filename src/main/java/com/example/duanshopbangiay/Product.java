@@ -4,26 +4,26 @@ import javafx.scene.image.Image;
 
 import java.io.InputStream;
 import java.io.Serializable;
-import java.net.URL;
 
 public class Product implements Serializable {
     private int id;
     private String name;
     private double price;
     private int quantity;
-    private String color; // Thêm thuộc tính màu
+    private String color;
+    private String size; // Thêm thuộc tính size
     private String imagePath;
 
     public Product() {
-
     }
 
-    public Product(int id, String name, double price, int quantity, String color, String imagePath) {
+    public Product(int id, String name, double price, int quantity, String color, String size, String imagePath) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
-        this.color = color; // Cập nhật thuộc tính màu
+        this.color = color;
+        this.size = size; // Cập nhật thuộc tính size
         this.imagePath = imagePath;
     }
 
@@ -61,11 +61,19 @@ public class Product implements Serializable {
     }
 
     public String getColor() {
-        return color; // Getter cho màu
+        return color;
     }
 
     public void setColor(String color) {
-        this.color = color; // Setter cho màu
+        this.color = color;
+    }
+
+    public String getSize() {
+        return size; // Getter cho size
+    }
+
+    public void setSize(String size) {
+        this.size = size; // Setter cho size
     }
 
     public String getImagePath() {
@@ -77,7 +85,6 @@ public class Product implements Serializable {
     }
 
     public Image getImage() {
-        // Sử dụng getClass().getResource để lấy đường dẫn hình ảnh
         InputStream imageStream = getClass().getResourceAsStream(imagePath);
         return imageStream != null ? new Image(imageStream) : null;
     }

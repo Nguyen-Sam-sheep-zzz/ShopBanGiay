@@ -41,6 +41,8 @@ public class ProductListController {
     @FXML
     private TableColumn<Product, String> colorColumn;
     @FXML
+    private TableColumn<Product, String> sizeColumn;
+    @FXML
     private TableColumn<Product, String> imageColumn;
     @FXML
     private TableColumn<Product, Void> actionsColumn;
@@ -62,8 +64,12 @@ public class ProductListController {
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
-
+        sizeColumn.setCellValueFactory(new PropertyValueFactory<>("size"));
         imageColumn.setCellValueFactory(new PropertyValueFactory<>("imagePath"));
+        // Ẩn cột màu
+        if (colorColumn != null) {
+            colorColumn.setVisible(false);
+        }
 
         imageColumn.setCellFactory(col -> new TableCell<Product, String>() {
             private final ImageView imageView = new ImageView();
@@ -93,12 +99,13 @@ public class ProductListController {
     }
 
     private void addDefaultProducts() {
-        productList.add(new Product(1, "Jordan 1 Pine", 500, 10, "228B22", "/img/Green-remove-preview.png"));
-        productList.add(new Product(2, "Jordan 1 Ocean", 100, 5, "0099CC", "/img/MidN-remove-preview.png"));
-        productList.add(new Product(3, "Jordan 1 Happy", 300, 8, "D2691E", "/img/Orange-remove-preview.png"));
-        productList.add(new Product(4, "Jordan 1 Rose", 800, 6, "FF1493", "/img/Pink-remove-preview.png"));
-        productList.add(new Product(5, "Jordan 1 R&W", 900, 9, "B22222", "/img/Red-remove-preview.png"));
-        productList.add(new Product(6, "Jordan 1 SSJ", 600, 9, "FFB605", "/img/YellowOriginal-remove-preview.png"));
+        productList.add(new Product(1, "Jordan 1 Pine", 500, 10, "228B22", "42", "/img/Green-remove-preview.png"));
+        productList.add(new Product(2, "Jordan 1 Ocean", 100, 5, "0099CC", "42", "/img/MidN-remove-preview.png"));
+        productList.add(new Product(3, "Jordan 1 Happy", 300, 8, "D2691E", "42", "/img/Orange-remove-preview.png"));
+        productList.add(new Product(4, "Jordan 1 Rose", 800, 6, "FF1493", "43", "/img/Pink-remove-preview.png"));
+        productList.add(new Product(5, "Jordan 1 R&W", 900, 9, "B22222", "39", "/img/Red-remove-preview.png"));
+        productList.add(new Product(6, "Jordan 1 SSJ", 600, 9, "FFB605", "41", "/img/YellowOriginal-remove-preview.png"));
+        saveProductsToFile();
     }
 
     @FXML
@@ -112,6 +119,7 @@ public class ProductListController {
             TextField priceField = new TextField();
             TextField quantityField = new TextField();
             TextField colorField = new TextField();
+            TextField sizeField = new TextField();
             TextField imageField = new TextField();
             Button uploadImageButton = new Button("Upload Image");
 
@@ -143,9 +151,11 @@ public class ProductListController {
             grid.add(quantityField, 1, 3);
             grid.add(new Label("Product Color:"), 0, 4);
             grid.add(colorField, 1, 4);
-            grid.add(new Label("Image Path:"), 0, 5);
-            grid.add(imageField, 1, 5);
-            grid.add(uploadImageButton, 1, 6);
+            grid.add(new Label("Product Size:"), 0, 5); // Thêm label cho size
+            grid.add(sizeField, 1, 5); // Thêm field cho size
+            grid.add(new Label("Image Path:"), 0, 6);
+            grid.add(imageField, 1, 6);
+            grid.add(uploadImageButton, 1, 7);
 
             dialog.getDialogPane().setContent(grid);
             dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -161,10 +171,11 @@ public class ProductListController {
             String priceText = priceField.getText();
             String quantityText = quantityField.getText();
             String color = colorField.getText();
+            String size = sizeField.getText();
             String imagePath = imageField.getText();
 
-            if (idText.isEmpty() || name.isEmpty() || priceText.isEmpty() || quantityText.isEmpty() || color.isEmpty() || imagePath.isEmpty()) {
-                showError("Invalid information", "Please fill in complete information for product ID, name, price, quantity, color, and image path.");
+            if (idText.isEmpty() || name.isEmpty() || priceText.isEmpty() || quantityText.isEmpty() || color.isEmpty() || size.isEmpty() || imagePath.isEmpty()) {
+                showError("Invalid information", "Please fill in complete information for product ID, name, price, quantity, color, size and image path.");
                 continue;
             }
 
@@ -179,7 +190,7 @@ public class ProductListController {
                     continue;
                 }
 
-                Product newProduct = new Product(id, name, price, quantity, color, imagePath);
+                Product newProduct = new Product(id, name, price, quantity, color, size, imagePath);
                 productList.add(newProduct);
                 saveProductsToFile(); // Lưu sản phẩm vào file sau khi thêm
                 productTableView.refresh();
@@ -259,6 +270,7 @@ public class ProductListController {
         TextField priceField = new TextField(String.valueOf(product.getPrice()));
         TextField quantityField = new TextField(String.valueOf(product.getQuantity()));
         TextField colorField = new TextField(product.getColor());
+        TextField sizeField = new TextField(product.getSize());
         TextField imageField = new TextField(product.getImagePath());
         Button uploadImageButton = new Button("Upload Image");
 
@@ -290,9 +302,11 @@ public class ProductListController {
         grid.add(quantityField, 1, 3);
         grid.add(new Label("Product Color:"), 0, 4);
         grid.add(colorField, 1, 4);
-        grid.add(new Label("Image Path:"), 0, 5);
-        grid.add(imageField, 1, 5);
-        grid.add(uploadImageButton, 1, 6);
+        grid.add(new Label("Product Size:"), 0, 5); // Thêm label cho size
+        grid.add(sizeField, 1, 5); // Thêm field cho size
+        grid.add(new Label("Image Path:"), 0, 6);
+        grid.add(imageField, 1, 6);
+        grid.add(uploadImageButton, 1, 7);
 
         dialog.getDialogPane().setContent(grid);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -304,10 +318,11 @@ public class ProductListController {
             String priceText = priceField.getText();
             String quantityText = quantityField.getText();
             String color = colorField.getText();
+            String size = sizeField.getText();
             String imagePath = imageField.getText();
 
-            if (name.isEmpty() || priceText.isEmpty() || quantityText.isEmpty() || color.isEmpty() || imagePath.isEmpty()) {
-                showError("Invalid information", "Please fill in complete information for name, price, quantity, color, and image path.");
+            if (name.isEmpty() || priceText.isEmpty() || quantityText.isEmpty() || color.isEmpty() || size.isEmpty()|| imagePath.isEmpty()) {
+                showError("Invalid information", "Please fill in complete information for name, price, quantity, color, size and image path.");
                 return;
             }
 
@@ -325,6 +340,7 @@ public class ProductListController {
                 product.setPrice(price);
                 product.setQuantity(quantity);
                 product.setColor(color);
+                product.setSize(size);
                 product.setImagePath(imagePath);
 
                 saveProductsToFile();
@@ -364,20 +380,21 @@ public class ProductListController {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] parts = line.split(",");
-                    if (parts.length == 6) {
+                    if (parts.length == 7) {
                         int id = Integer.parseInt(parts[0]);
                         String name = parts[1];
                         double price = Double.parseDouble(parts[2]);
                         int quantity = Integer.parseInt(parts[3]);
                         String color = parts[4];
-                        String imagePath = parts[5];
+                        String size = parts[5];
+                        String imagePath = parts[6];
 
                         // Nếu đường dẫn không bắt đầu bằng "img/", hãy thêm phần này để đảm bảo đường dẫn chính xác
                         if (!imagePath.startsWith("/img/")) {
                             imagePath = "/img/" + imagePath;
                         }
 
-                        productList.add(new Product(id, name, price, quantity, color, imagePath));
+                        productList.add(new Product(id, name, price, quantity, color, size, imagePath));
                     }
                 }
             } catch (IOException e) {
@@ -386,16 +403,23 @@ public class ProductListController {
         }
     }
 
-
     private void saveProductsToFile() {
+        System.out.println("Number of products to save: " + productList.size());
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("products.txt"))) {
             for (Product product : productList) {
-                writer.write(product.getId() + "," + product.getName() + "," + product.getPrice() + "," + product.getQuantity() + "," + product.getColor() + "," + product.getImagePath());
+                writer.write(product.getId() + "," +
+                        product.getName() + "," +
+                        product.getPrice() + "," +
+                        product.getQuantity() + "," +
+                        product.getColor() + "," +
+                        product.getSize() + "," +
+                        product.getImagePath());
                 writer.newLine();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
 }

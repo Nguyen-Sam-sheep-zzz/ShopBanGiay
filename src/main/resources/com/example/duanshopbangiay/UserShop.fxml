@@ -39,7 +39,7 @@
                         <Insets left="30.0" right="30.0" />
                      </VBox.margin>
                      <children>
-                        <TextField prefHeight="40.0" prefWidth="230.0" promptText=" Type here to search" styleClass="transparent" stylesheets="@Style.css">
+                        <TextField fx:id="searchTextField" prefHeight="40.0" prefWidth="230.0" promptText=" Type here to search" styleClass="transparent" stylesheets="@Style.css">
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
@@ -47,7 +47,7 @@
                               <Font name="Cambria" size="18.0" />
                            </font>
                         </TextField>
-                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" styleClass="search-button" stylesheets="@Style.css" text="Search" textFill="#fcf9f9" />
+                        <Button fx:id="searchButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" styleClass="search-button" stylesheets="@Style.css" text="Search" textFill="#fcf9f9" />
                      </children>
                      <styleClass>
                         <String fx:value="search-box" />
@@ -98,7 +98,7 @@
                                     <Insets />
                                  </HBox.margin>
                               </Label>
-                              <ComboBox prefHeight="45.0" prefWidth="130.0" promptText="1" styleClass="comboBox" />
+                              <ComboBox fx:id="quantityComboBox" prefHeight="45.0" prefWidth="130.0" promptText="1" styleClass="comboBox" onAction="#onQuantityChange" />
                            </children>
                            <VBox.margin>
                               <Insets top="20.0" />
@@ -110,7 +110,7 @@
                            </VBox.margin>
                            <children>
                               <Separator prefHeight="2.0" prefWidth="90.0" />
-                              <Label alignment="CENTER" prefHeight="45.0" prefWidth="45.0" text="Or" textFill="#f5f2f2">
+                              <Label alignment="CENTER" prefHeight="45.0" prefWidth="45.0" text="And" textFill="#f5f2f2">
                                  <font>
                                     <Font name="Cambria" size="24.0" />
                                  </font>
@@ -120,15 +120,15 @@
                         </HBox>
                         <HBox alignment="CENTER" layoutX="10.0" layoutY="382.0" prefHeight="49.0" prefWidth="335.0">
                            <children>
-                              <Label prefHeight="49.0" prefWidth="167.0" text="Quantity" textFill="#f5f2f2">
+                              <Label prefHeight="49.0" prefWidth="167.0" text="Size" textFill="#f5f2f2">
                                  <font>
                                     <Font name="Cambria" size="24.0" />
                                  </font>
                               </Label>
-                              <ComboBox prefHeight="45.0" prefWidth="130.0" promptText="Selected" styleClass="comboBox" />
+                              <ComboBox fx:id="sizeComboBox" prefHeight="45.0" prefWidth="130.0" promptText="36" styleClass="comboBox" onAction="#onSizeChange" />
                            </children>
                         </HBox>
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="270.0" styleClass="add-btn" text="Add to card" textFill="#828282">
+                        <Button fx:id="addToCart" mnemonicParsing="false" prefHeight="50.0" prefWidth="270.0" styleClass="add-btn" text="Add to card" textFill="#828282">
                            <VBox.margin>
                               <Insets bottom="20.0" top="30.0" />
                            </VBox.margin>
@@ -164,7 +164,7 @@
                               <Font name="Cambria Bold" size="18.0" />
                            </font>
                         </Label>
-                        <ImageView fitHeight="50.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="cartIcon" fitHeight="50.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../../img/pngtree-flat-shopping-cart-image_1129764-removebg-preview.png" />
                            </image>

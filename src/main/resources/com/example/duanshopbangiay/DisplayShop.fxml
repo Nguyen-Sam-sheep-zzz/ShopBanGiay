@@ -1,30 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.duanshopbangiay.ProductListController"
-      alignment="CENTER"
-      spacing="20">
+<VBox alignment="CENTER" spacing="20" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.duanshopbangiay.ProductListController">
     <HBox alignment="CENTER" spacing="20">
-        <Button onAction="#switchToDisplayLogin" text="Logout" prefWidth="100"/>
-        <Button onAction="#switchToOrderList" text="List of orders" prefWidth="100"/>
+        <Button onAction="#switchToDisplayLogin" prefHeight="33.0" prefWidth="100" stylesheets="@Style.css" text="Logout" textFill="#181818" />
+        <Button onAction="#switchToOrderList" prefHeight="35.0" prefWidth="100" stylesheets="@Style.css" text="List of orders" />
+      <VBox.margin>
+         <Insets top="20.0" />
+      </VBox.margin>
     </HBox>
 
-    <TableView fx:id="productTableView" prefWidth="766" maxWidth="766">
+    <TableView fx:id="productTableView" maxWidth="766" prefWidth="766">
         <columns>
-            <TableColumn fx:id="idColumn" text="ID" prefWidth="100"/>
-            <TableColumn fx:id="nameColumn" text="Product Name" prefWidth="150"/>
-            <TableColumn fx:id="imageColumn" text="Image" prefWidth="100"/>
-            <TableColumn fx:id="priceColumn" text="Price" prefWidth="100"/>
-            <TableColumn fx:id="quantityColumn" text="Quantity" prefWidth="100"/>
-            <TableColumn fx:id="colorColumn" text="Color" prefWidth="100"/> <!-- Cột cho màu sắc -->
-            <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="116"/>
+            <TableColumn fx:id="idColumn" prefWidth="100" text="ID" />
+            <TableColumn fx:id="nameColumn" prefWidth="150" text="Product Name" />
+            <TableColumn fx:id="imageColumn" prefWidth="100" text="Image" />
+            <TableColumn fx:id="priceColumn" prefWidth="100" text="Price" />
+            <TableColumn fx:id="quantityColumn" prefWidth="100" text="Quantity" />
+            <TableColumn fx:id="colorColumn" prefWidth="100" text="Color" /> <!-- Cột cho màu sắc -->
+            <TableColumn fx:id="sizeColumn" prefWidth="100" text="Size" />
+            <TableColumn fx:id="actionsColumn" prefWidth="116" text="Actions" />
         </columns>
     </TableView>
-    <HBox alignment="CENTER" fx:id="addProductBox">
-        <Button fx:id="addButton" text="Add product" onAction="#addProduct"/> <!-- Gọi phương thức addProduct -->
+    <HBox fx:id="addProductBox" alignment="CENTER">
+        <Button fx:id="addButton" onAction="#addProduct" prefHeight="38.0" prefWidth="267.0" stylesheets="@Style.css" text="Add product">
+         <HBox.margin>
+            <Insets />
+         </HBox.margin></Button>
+      <VBox.margin>
+         <Insets bottom="20.0" />
+      </VBox.margin> <!-- Gọi phương thức addProduct -->
     </HBox>
 </VBox>
