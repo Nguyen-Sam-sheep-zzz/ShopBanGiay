@@ -1,7 +1,4 @@
 package com.example.duanshopbangiay;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -166,7 +163,7 @@ public class UserShopController implements Initializable {
                 AnchorPane cartView = cartViewLoader.load();
                 CartViewController controller = cartViewLoader.getController();
                 controller.setCart(cart);
-                controller.loadCartItemsFromFile();// Đọc dữ liệu từ tệp khi mở
+                controller.loadCartItemsFromFile(); // Đọc dữ liệu từ tệp khi mở
                 controller.updateTotalAmount();
 
                 cartViewStage = new Stage();
@@ -178,18 +175,18 @@ public class UserShopController implements Initializable {
                     CartViewController cartController = cartViewLoader.getController();
                     if (cartController != null) {
                         cartController.saveCartToFile(); // Lưu dữ liệu khi cửa sổ đóng
-                        controller.updateTotalAmount();
                     }
                 });
 
+                cartViewStage.show();
             } else {
                 CartViewController controller = cartViewLoader.getController();
                 if (controller != null) {
                     controller.loadCartItemsFromFile(); // Đọc dữ liệu từ tệp khi mở
+                    controller.updateTotalAmount();
                 }
+                cartViewStage.show();
             }
-
-            cartViewStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }

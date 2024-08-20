@@ -1,15 +1,14 @@
 package com.example.duanshopbangiay;
 
-import java.util.ArrayList;
-
 public class User {
     private String username;
     private String password;
-    private String role = "user";
+    private String role; // "user" or "admin"
 
-    public User(String username, String password) {
+    public User(String username, String password, String role) {
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
     public String getUsername() {

@@ -60,7 +60,7 @@ public class RegisterController {
             }
         }
 
-        User newUser = new User(username, password);
+        User newUser = new User(username, password, "user"); // Assume new users are 'user' role by default
         userList.add(newUser);
 
         // Save the new user immediately
@@ -98,7 +98,7 @@ public class RegisterController {
         Path path = Paths.get("src/main/resources/users.txt");
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path.toFile()))) {
             for (User user : userList) {
-                writer.write(user.getUsername() + "," + user.getPassword());
+                writer.write(user.getUsername() + "," + user.getPassword() + "," + user.getRole());
                 writer.newLine();
             }
         } catch (IOException e) {
@@ -108,13 +108,13 @@ public class RegisterController {
 
     // Load users from file with relative path
     private static void loadUsers() {
-        Path path = Paths.get("users.txt");
+        Path path = Paths.get("src/main/resources/users.txt");
         try (BufferedReader reader = new BufferedReader(new FileReader(path.toFile()))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 2) {
-                    userList.add(new User(parts[0], parts[1]));
+                if (parts.length == 3) { // Updated to match new User constructor
+                    userList.add(new User(parts[0], parts[1], parts[2]));
                 }
             }
         } catch (IOException e) {

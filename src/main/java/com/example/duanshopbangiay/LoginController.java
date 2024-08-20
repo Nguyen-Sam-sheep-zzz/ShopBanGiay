@@ -18,16 +18,16 @@ public class LoginController {
     @FXML
     private PasswordField password;
 
-
     private Stage stage;
-
     private Scene scene;
 
-    Admin admin1 = new Admin("NhanSam", "123");
-    Admin admin2 = new Admin("ChiAnh", "123");
-    Admin admin3 = new Admin("VietTam", "123");
-    Admin admin4 = new Admin("DucDuy", "123");
+    // Admin data (in a real application, this would be loaded from a database)
+    Admin admin1 = new Admin("NhanSam", "123", "admin");
+    Admin admin2 = new Admin("ChiAnh", "123", "admin");
+    Admin admin3 = new Admin("VietTam", "123", "admin");
+    Admin admin4 = new Admin("DucDuy", "123", "admin");
 
+    // User data (in a real application, this would be loaded from a database)
     List<User> userList = RegisterController.getUserList();
 
     public void switchToRegister(ActionEvent event) throws IOException {
@@ -48,53 +48,57 @@ public class LoginController {
     }
 
     public void switchToDisplayShop(ActionEvent event) throws IOException {
-        String username = this.username.getText();
-        String password = this.password.getText();
+        String usernameText = this.username.getText();
+        String passwordText = this.password.getText();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        List<User> userList = RegisterController.getUserList();
+
+        // Add admin data to the user list
         userList.add(admin1);
         userList.add(admin2);
         userList.add(admin3);
         userList.add(admin4);
 
-        if (username.isEmpty() || password.isEmpty()) {
-            alert.setContentText("Error Username and Password cannot be empty.");
+        if (usernameText.isEmpty() || passwordText.isEmpty()) {
+            alert.setContentText("Error: Username and Password cannot be empty.");
             alert.show();
             return;
         }
-        boolean isValidUser = userList.stream().anyMatch(user -> user.getUsername().equals(username) && user.getPassword().equals(password));
-        if (!isValidUser) {
+
+        User user = findUser(usernameText);
+
+        if (user == null || !user.getPassword().equals(passwordText)) {
             showAlert(Alert.AlertType.ERROR, "Login Failed", "Invalid username or password");
+            return;
         }
 
-        if (findUser(username).getUsername().equals(username) && findUser(username).getPassword().equals(password)) {
-            if (!findUser(username).getRole().equals("admin")) {
-                alert.setContentText("Login successful hello user " + username);
-                alert.show();
-                Parent root = FXMLLoader.load(LoginApplication.class.getResource("UserShop.fxml"));
-                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                scene = new Scene(root);
-                stage.setTitle("Shop");
-                stage.setScene(scene);
-                stage.show();
+        // Save the current user to the session
+        UserSession.setCurrentUser(user);
 
-            } else {
-                alert.setContentText("Login successful hello admin " + username);
-                alert.show();
-                Parent root = FXMLLoader.load(LoginApplication.class.getResource("DisplayShop.fxml"));
-                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                scene = new Scene(root);
-                stage.setTitle("Shop");
-                stage.setScene(scene);
-                stage.show();
-            }
+        if (!user.getRole().equals("admin")) {
+            alert.setContentText("Login successful! Hello, user " + usernameText);
+            alert.show();
+            Parent root = FXMLLoader.load(LoginApplication.class.getResource("UserShop.fxml"));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setTitle("User Shop");
+            stage.setScene(scene);
+            stage.show();
+        } else {
+            alert.setContentText("Login successful! Hello, admin " + usernameText);
+            alert.show();
+            Parent root = FXMLLoader.load(LoginApplication.class.getResource("DisplayShop.fxml"));
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setTitle("Admin Shop");
+            stage.setScene(scene);
+            stage.show();
         }
     }
 
-    public User findUser(String username) {
-        for (User value : userList) {
-            if (value.getUsername().equals(username))
-                return value;
+    private User findUser(String username) {
+        for (User user : userList) {
+            if (user.getUsername().equals(username))
+                return user;
         }
         return null;
     }

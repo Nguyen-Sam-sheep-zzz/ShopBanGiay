@@ -3,6 +3,7 @@ package com.example.duanshopbangiay;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -11,10 +12,11 @@ import javafx.scene.image.ImageView;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-
+import javafx.event.ActionEvent;
 import java.io.*;
 
 public class CartViewController {
+    public Button payButton;
     private Stage stage;
     private Scene scene;
 
@@ -42,7 +44,6 @@ public class CartViewController {
     private ObservableList<Product> cartItems = FXCollections.observableArrayList();
 
     private Cart cart;
-
 
     @FXML
     public void initialize() {
@@ -88,8 +89,8 @@ public class CartViewController {
                                     cartItems.remove(product);
                                     if (cart != null) {
                                         cart.removeProduct(product);
+                                        saveCartToFile();
                                     }
-                                    saveCartToFile();
                                     updateTotalAmount();
                                 }
                                 // Nếu người dùng không đồng ý, không làm gì cả
@@ -108,6 +109,7 @@ public class CartViewController {
         loadCartItemsFromFile();
         cartTableView.setItems(cartItems);
         updateTotalAmount();
+        payButton.setOnAction(this::handlePayNow);
     }
 
     public void setCart(Cart cart) {
@@ -121,9 +123,8 @@ public class CartViewController {
         totalAmountLabel.setText(String.format("$%.2f", total));
     }
     public void loadCartItemsFromFile() {
-
+        cartItems.clear();
         String filePath = "Cart.txt";
-
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -163,7 +164,82 @@ public class CartViewController {
             e.printStackTrace();
         }
     }
+    private void saveOrderToFile(String username, ObservableList<Product> products, double totalAmount) {
+        String filePath = "allOrder.txt";
+
+        try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)))) {
+            // Tạo danh sách các sản phẩm dưới dạng chuỗi
+            StringBuilder productDetails = new StringBuilder();
+            for (Product product : products) {
+                if (productDetails.length() > 0) {
+                    productDetails.append(";");
+                }
+                productDetails.append(String.format("%d:%s:%s:%.2f:%d:%s:%s",
+                        product.getId(),
+                        product.getName(),
+                        product.getImagePath(),
+                        product.getPrice(),
+                        product.getQuantity(),
+                        product.getColor(),
+                        product.getSize()));
+            }
+
+            // Ghi thông tin đơn hàng vào file
+            pw.printf("%s,%s,%.2f,%s%n",
+                    username, // Tên người dùng
+                    productDetails.toString(), // Danh sách sản phẩm
+                    totalAmount, // Tổng tiền
+                    "Waiting for payment" // Trạng thái đơn hàng
+            );
+        } catch (IOException e) {
+            e.printStackTrace(); // Cân nhắc thay thế bằng logging hoặc thông báo cho người dùng
+        }
+    }
+
+
+    @FXML
+    private void handlePayNow(ActionEvent event) {
+        double totalAmount = cartItems.stream().mapToDouble(p -> p.getPrice() * p.getQuantity()).sum();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Payment");
+        alert.setHeaderText(null);
+        alert.setContentText("The total amount for your order is $" + String.format("%.2f", totalAmount) + ". Do you want to proceed with the payment?");
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                // Lấy tên người dùng hiện tại
+                String currentUser = getCurrentUser();
+
+                // Lưu thông tin đơn hàng vào file cho tất cả sản phẩm trong giỏ hàng
+                saveOrderToFile(currentUser, cartItems, totalAmount);
+
+                // Xóa giỏ hàng và cập nhật UI
+                cartItems.clear();
+                updateTotalAmount(); // Cập nhật tổng số tiền
+
+                // Thông báo cho người dùng
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Payment Successful");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("Your order has been placed successfully.");
+                successAlert.show();
+
+                // Đóng cửa sổ giỏ hàng (Cart View)
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.close();
+            }
+        });
+    }
+
+    private String getCurrentUser() {
+        // Return the username of the currently logged-in user
+        User currentUser = UserSession.getCurrentUser();
+        return (currentUser != null) ? currentUser.getUsername() : "Unknown User";
+    }
 
 }
+
+
 
 

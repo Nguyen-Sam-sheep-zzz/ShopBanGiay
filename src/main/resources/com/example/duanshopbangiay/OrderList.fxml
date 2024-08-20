@@ -16,11 +16,16 @@
             </padding>
             <Button onAction="#switchToDisplayShop" text="Back to shop" prefWidth="100"/>
         </HBox>
-        <TableView fx:id="orderTable" prefWidth="665" maxWidth="665">
+        <TableView fx:id="orderTable" prefWidth="1115" maxWidth="1115">
             <columns>
                 <TableColumn fx:id="customerNameColumn" text="Customer Name" prefWidth="100" />
-                <TableColumn fx:id="productNameColumn" text="Product" prefWidth="100" />
-                <TableColumn fx:id="quantityColumn" text="Quantity" prefWidth="100"/>
+                <TableColumn fx:id="idProductColumn" prefWidth="100" text="ID Product" />
+                <TableColumn fx:id="productNameColumn" prefWidth="150" text="Product Name" />
+                <TableColumn fx:id="imageColumn" prefWidth="100" text="Image" />
+                <TableColumn fx:id="priceColumn" prefWidth="100" text="Price" />
+                <TableColumn fx:id="quantityColumn" prefWidth="100" text="Quantity" />
+                <TableColumn fx:id="colorColumn" prefWidth="100" text="Color" />
+                <TableColumn fx:id="sizeColumn" prefWidth="100" text="Size" />
                 <TableColumn fx:id="totalAmountColumn" text="Total amount" prefWidth="100"/>
                 <TableColumn fx:id="orderStatusColumn" text="Status" prefWidth="120"/>
                 <TableColumn fx:id="actionColumn" text="Actions" prefWidth="145"/>

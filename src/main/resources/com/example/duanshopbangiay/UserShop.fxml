@@ -39,7 +39,7 @@
                         <Insets left="30.0" right="30.0" />
                      </VBox.margin>
                      <children>
-                        <TextField prefHeight="40.0" prefWidth="230.0" promptText=" Type here to search" styleClass="transparent" stylesheets="@Style.css">
+                        <TextField fx:id="searchTextField" prefHeight="40.0" prefWidth="230.0" promptText=" Type here to search" styleClass="transparent" stylesheets="@Style.css">
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
