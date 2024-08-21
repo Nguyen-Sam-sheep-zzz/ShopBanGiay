@@ -1,284 +1,256 @@
 package com.example.duanshopbangiay;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.layout.HBox;
-import javafx.util.Callback;
-import java.util.ArrayList;
-import java.util.List;
-import java.io.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderController {
 
     @FXML
-    private TableView<Order> orderTable;
-
+    private TableView<OrderDisplay> orderTable;
     @FXML
-    private TableColumn<Order, String> customerNameColumn;
-
+    private TableColumn<OrderDisplay, String> customerNameColumn;
     @FXML
-    private TableColumn<Order, Integer> idProductColumn;
-
+    private TableColumn<OrderDisplay, String> totalProducts;
     @FXML
-    private TableColumn<Order, String> productNameColumn;
-
+    private TableColumn<OrderDisplay, String> idProductColumn;
     @FXML
-    private TableColumn<Order, String> imageColumn;
-
+    private TableColumn<OrderDisplay, String> productNameColumn;
     @FXML
-    private TableColumn<Order, Double> priceColumn;
-
+    private TableColumn<OrderDisplay, String> imageColumn;
     @FXML
-    private TableColumn<Order, Integer> quantityColumn;
-
+    private TableColumn<OrderDisplay, String> priceColumn;
     @FXML
-    private TableColumn<Order, String> colorColumn;
-
+    private TableColumn<OrderDisplay, String> quantityColumn;
     @FXML
-    private TableColumn<Order, String> sizeColumn;
-
+    private TableColumn<OrderDisplay, String> colorColumn;
     @FXML
-    private TableColumn<Order, Double> totalAmountColumn;
-
+    private TableColumn<OrderDisplay, String> sizeColumn;
     @FXML
-    private TableColumn<Order, String> orderStatusColumn;
-
+    private TableColumn<OrderDisplay, String> totalAmountColumn;
     @FXML
-    private TableColumn<Order, Void> actionColumn;
-
+    private TableColumn<OrderDisplay, String> orderStatusColumn;
     @FXML
-    private Button backButton;
+    private TableColumn<OrderDisplay, String> actionColumn;
 
-    private ObservableList<Order> orders = FXCollections.observableArrayList();
-
+    private ObservableList<OrderDisplay> orderList;
     @FXML
     public void initialize() {
-        colorColumn.setVisible(false);
-        // Initialize table columns
+        orderList = FXCollections.observableArrayList();
         customerNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-        idProductColumn.setCellValueFactory(new PropertyValueFactory<>("idProduct"));
-        productNameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        totalProducts.setCellValueFactory(new PropertyValueFactory<>("totalProducts"));
 
-        // Sử dụng ImageView trong cột hình ảnh
-        imageColumn.setCellValueFactory(new PropertyValueFactory<>("imagePath"));
-        imageColumn.setCellFactory(column -> new TableCell<Order, String>() {
-            private final ImageView imageView = new ImageView();
+        idProductColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getProducts().stream()
+                        .map(product -> String.valueOf(product.getId()))
+                        .reduce((a, b) -> a + ", " + b)
+                        .orElse("")
+        ));
 
+        productNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getProducts().stream()
+                        .map(Product::getName)
+                        .reduce((a, b) -> a + ", " + b)
+                        .orElse("")
+        ));
+
+        // Update the imageColumn cell factory
+        imageColumn.setCellValueFactory(cellData -> cellData.getValue().productImagesProperty());
+        imageColumn.setCellFactory(column -> new TableCell<OrderDisplay, String>() {
             @Override
-            protected void updateItem(String imagePath, boolean empty) {
-                super.updateItem(imagePath, empty);
-                if (empty || imagePath == null) {
+            protected void updateItem(String imagePaths, boolean empty) {
+                super.updateItem(imagePaths, empty);
+                if (empty || imagePaths == null || imagePaths.isEmpty()) {
                     setGraphic(null);
                 } else {
-                    try {
-                        // Sử dụng đường dẫn tương đối từ thư mục resources
-                        InputStream imageStream = getClass().getResourceAsStream(imagePath);
-                        if (imageStream != null) {
-                            Image image = new Image(imageStream);
-                            imageView.setImage(image);
-                            imageView.setFitHeight(50);  // Giới hạn chiều cao
-                            imageView.setFitWidth(50);   // Giới hạn chiều rộng
-                            imageView.setPreserveRatio(true); // Giữ tỷ lệ ảnh
-                            setGraphic(imageView);
-                        } else {
-                            // Nếu không tìm thấy ảnh, hiển thị một ảnh mặc định hoặc thông báo lỗi
-                            Image defaultImage = new Image("/img/default.png"); // Đảm bảo có một ảnh mặc định trong thư mục resources
-                            imageView.setImage(defaultImage);
-                            imageView.setFitHeight(50);
-                            imageView.setFitWidth(50);
-                            imageView.setPreserveRatio(true);
-                            setGraphic(imageView);
+                    HBox hbox = new HBox();
+                    String[] paths = imagePaths.split(", ");
+                    for (String path : paths) {
+                        InputStream imageStream = getClass().getResourceAsStream(path);
+                        if (imageStream == null) {
+                            imageStream = getClass().getResourceAsStream("/img/placeholder.png");
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        setGraphic(null);
+                        if (imageStream != null) {
+                            try {
+                                Image image = new Image(imageStream);
+                                ImageView imageView = new ImageView(image);
+                                imageView.setFitWidth(50);
+                                imageView.setFitHeight(50);
+                                hbox.getChildren().add(imageView);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
+                    setGraphic(hbox);
                 }
             }
         });
 
-
-        // Các cột khác
-        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        sizeColumn.setCellValueFactory(new PropertyValueFactory<>("size"));
+        priceColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getProducts().stream()
+                        .map(Product::getPrice)
+                        .map(String::valueOf)
+                        .reduce((a, b) -> a + ", " + b)
+                        .orElse("")
+        ));
+        quantityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getProducts().stream()
+                        .map(Product::getQuantity)
+                        .map(String::valueOf)
+                        .reduce((a, b) -> a + ", " + b)
+                        .orElse("")
+        ));
+        colorColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getProducts().stream()
+                        .map(Product::getColor)
+                        .reduce((a, b) -> a + ", " + b)
+                        .orElse("")
+        ));
+        sizeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getProducts().stream()
+                        .map(Product::getSize)
+                        .reduce((a, b) -> a + ", " + b)
+                        .orElse("")
+        ));
         totalAmountColumn.setCellValueFactory(new PropertyValueFactory<>("totalAmount"));
         orderStatusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        // Create action buttons
-        actionColumn.setCellFactory(new Callback<TableColumn<Order, Void>, TableCell<Order, Void>>() {
-            @Override
-            public TableCell<Order, Void> call(TableColumn<Order, Void> param) {
-                return new TableCell<>() {
-                    private final Button payButton = new Button("Paid");
-                    private final Button cancelButton = new Button("Cancel Order");
+        productNameColumn.setVisible(false);
+        priceColumn.setVisible(false);
+        quantityColumn.setVisible(false);
 
-                    {
-                        payButton.setOnAction(event -> {
-                            Order order = getTableView().getItems().get(getIndex());
-                            if ("Waiting for payment".equals(order.getStatus())) {
-                                order.setStatus("Paid");
-                                updateOrderInFile(order);
-                            }
-                        });
 
-                        cancelButton.setOnAction(event -> {
-                            Order order = getTableView().getItems().get(getIndex());
-                            if ("Waiting for payment".equals(order.getStatus())) {
-                                order.setStatus("Cancelled");
-                                updateOrderInFile(order);
-                            }
-                        });
-                    }
-
-                    @Override
-                    protected void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            if ("Waiting for payment".equals(getTableView().getItems().get(getIndex()).getStatus())) {
-                                setGraphic(new HBox(10, payButton, cancelButton));
-                            } else {
-                                setGraphic(null);
-                            }
-                        }
-                    }
-                };
-            }
-        });
-
-        // Load orders from file
-        orderLoader();
+        loadOrdersFromFile("allOrder.txt");
+        orderTable.setItems(orderList);
     }
-    private void orderLoader() {
-        String filePath = "allOrder.txt";
+
+    private void loadOrdersFromFile(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] data = line.split(",");
-                if (data.length == 4) {
-                    String customerName = data[0];
-                    String productDetails = data[1];
-                    double totalAmount = Double.parseDouble(data[2]);
-                    String status = data[3];
+                String[] parts = line.split(",");
+                if (parts.length > 2) {
+                    String customerName = parts[0];
+                    int totalProducts = Integer.parseInt(parts[1]);
+                    List<Product> products = new ArrayList<>();
+                    double totalAmount = Double.parseDouble(parts[parts.length - 2]);
+                    String status = parts[parts.length - 1];
 
-                    // Xử lý thông tin sản phẩm
-                    String[] products = productDetails.split(";");
-                    for (String product : products) {
-                        String[] productData = product.split(":");
-                        if (productData.length == 7) {
-                            int idProduct = Integer.parseInt(productData[0]);
-                            String productName = productData[1];
-                            String imagePath = productData[2];
-                            double price = Double.parseDouble(productData[3]);
-                            int quantity = Integer.parseInt(productData[4]);
-                            String color = productData[5];
-                            String size = productData[6];
+                    String[] productDetails = parts[2].split(";");
+                    for (String detail : productDetails) {
+                        String[] productInfo = detail.split(":");
+                        int id = Integer.parseInt(productInfo[0]);
+                        String name = productInfo[1];
+                        String imagePath = productInfo[2];
+                        double price = Double.parseDouble(productInfo[3]);
+                        int quantity = Integer.parseInt(productInfo[4]);
+                        String color = productInfo[5];
+                        String size = productInfo[6];
 
-                            // Tạo hoặc cập nhật đơn hàng
-                            boolean found = false;
-                            for (Order existingOrder : orders) {
-                                if (existingOrder.getIdProduct() == idProduct && existingOrder.getSize().equals(size)) {
-                                    existingOrder.setQuantity(existingOrder.getQuantity() + quantity);
-                                    existingOrder.setTotalAmount(existingOrder.getTotalAmount() + price * quantity);
-                                    found = true;
-                                    break;
-                                }
-                            }
-
-                            if (!found) {
-                                Order order = new Order(customerName, idProduct, productName, imagePath, price, quantity, color, size, price * quantity, status);
-                                orders.add(order);
-                            }
-                        }
+                        Product product = new Product(id, name, price, quantity, color, size, imagePath);
+                        products.add(product);
                     }
+
+                    OrderDisplay orderDisplay = new OrderDisplay(customerName, products, totalAmount, status);
+                    orderList.add(orderDisplay);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // Set items to TableView
-        orderTable.setItems(orders);
     }
 
-    private void updateOrderInFile(Order updatedOrder) {
-        String filePath = "allOrder.txt";
-        List<String> fileContent = new ArrayList<>();
+    public void switchToDisplayShop(ActionEvent event) throws IOException {
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] data = line.split(",");
-                if (data.length == 4) {
-                    String customerName = data[0];
-                    String productDetails = data[1];
-                    double totalAmount = Double.parseDouble(data[2]);
-                    String status = data[3];
+    }
+    public static class OrderDisplay {
+        private final SimpleStringProperty customerName;
+        private final SimpleStringProperty totalProducts;
+        private final ObservableList<Product> products;
+        private final SimpleStringProperty totalAmount;
+        private final SimpleStringProperty status;
+        private final SimpleStringProperty productImages; // Add this property
 
-                    if (customerName.equals(updatedOrder.getCustomerName()) && productDetails.contains(String.valueOf(updatedOrder.getIdProduct()))) {
-                        // Cập nhật dòng có trạng thái mới
-                        String newProductDetails = updateProductDetails(productDetails, updatedOrder);
-                        line = customerName + "," + newProductDetails + "," + updatedOrder.getTotalAmount() + "," + updatedOrder.getStatus();
-                    }
+        public OrderDisplay(String customerName, List<Product> products, double totalAmount, String status) {
+            this.customerName = new SimpleStringProperty(customerName);
+            this.totalProducts = new SimpleStringProperty(String.valueOf(products.size()));
+            this.products = FXCollections.observableArrayList(products);
+            this.totalAmount = new SimpleStringProperty(String.valueOf(totalAmount));
+            this.status = new SimpleStringProperty(status);
+
+            // Combine image paths
+            StringBuilder images = new StringBuilder();
+            for (Product product : products) {
+                if (images.length() > 0) {
+                    images.append(", ");
                 }
-                fileContent.add(line);
+                images.append(product.getImagePath());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            this.productImages = new SimpleStringProperty(images.toString());
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            for (String line : fileContent) {
-                writer.write(line);
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        public String getCustomerName() {
+            return customerName.get();
         }
 
-        // Cập nhật lại TableView sau khi thay đổi
-        orderTable.refresh();
-    }
-
-    private String updateProductDetails(String productDetails, Order updatedOrder) {
-        StringBuilder newDetails = new StringBuilder();
-        String[] products = productDetails.split(";");
-        for (String product : products) {
-            String[] productData = product.split(":");
-            if (Integer.parseInt(productData[0]) == updatedOrder.getIdProduct() && productData[6].equals(updatedOrder.getSize())) {
-                newDetails.append(String.format("%d:%s:%s:%.2f:%d:%s:%s",
-                        updatedOrder.getIdProduct(),
-                        updatedOrder.getProductName(),
-                        updatedOrder.getImagePath(),
-                        updatedOrder.getPrice(),
-                        updatedOrder.getQuantity(),
-                        updatedOrder.getColor(),
-                        updatedOrder.getSize()));
-            } else {
-                newDetails.append(product);
-            }
-            newDetails.append(";");
+        public SimpleStringProperty customerNameProperty() {
+            return customerName;
         }
-        if (newDetails.length() > 0) {
-            newDetails.setLength(newDetails.length() - 1); // Loại bỏ dấu chấm phẩy cuối cùng
+
+        public String getTotalProducts() {
+            return totalProducts.get();
         }
-        return newDetails.toString();
-    }
 
-    @FXML
-    private void switchToDisplayShop() {
+        public SimpleStringProperty totalProductsProperty() {
+            return totalProducts;
+        }
 
+        public ObservableList<Product> getProducts() {
+            return products;
+        }
+
+        public String getTotalAmount() {
+            return totalAmount.get();
+        }
+
+        public SimpleStringProperty totalAmountProperty() {
+            return totalAmount;
+        }
+
+        public String getStatus() {
+            return status.get();
+        }
+
+        public SimpleStringProperty statusProperty() {
+            return status;
+        }
+
+        public String getProductImages() {
+            return productImages.get();
+        }
+
+        public SimpleStringProperty productImagesProperty() {
+            return productImages;
+        }
     }
 
 }
-

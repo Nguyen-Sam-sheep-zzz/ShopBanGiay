@@ -14,9 +14,9 @@ public class Product implements Serializable {
     private String size; // Thêm thuộc tính size
     private String imagePath;
 
-    public Product() {
-    }
+    Product() {
 
+    }
     public Product(int id, String name, double price, int quantity, String color, String size, String imagePath) {
         this.id = id;
         this.name = name;

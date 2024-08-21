@@ -19,6 +19,7 @@
         <TableView fx:id="orderTable" prefWidth="1115" maxWidth="1115">
             <columns>
                 <TableColumn fx:id="customerNameColumn" text="Customer Name" prefWidth="100" />
+                <TableColumn fx:id="totalProducts" text="Total Product " prefWidth="100" />
                 <TableColumn fx:id="idProductColumn" prefWidth="100" text="ID Product" />
                 <TableColumn fx:id="productNameColumn" prefWidth="150" text="Product Name" />
                 <TableColumn fx:id="imageColumn" prefWidth="100" text="Image" />

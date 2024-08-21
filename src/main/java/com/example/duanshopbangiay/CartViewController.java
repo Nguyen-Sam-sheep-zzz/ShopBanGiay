@@ -13,13 +13,12 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.event.ActionEvent;
+
 import java.io.*;
 
 public class CartViewController {
-    public Button payButton;
-    private Stage stage;
-    private Scene scene;
-
+    @FXML
+    private Button payButton;
     @FXML
     private TableView<Product> cartTableView;
     @FXML
@@ -42,7 +41,6 @@ public class CartViewController {
     private Label totalAmountLabel;
 
     private ObservableList<Product> cartItems = FXCollections.observableArrayList();
-
     private Cart cart;
 
     @FXML
@@ -50,6 +48,7 @@ public class CartViewController {
         if (colorColumn != null) {
             colorColumn.setVisible(false);
         }
+
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
@@ -64,11 +63,8 @@ public class CartViewController {
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         sizeColumn.setCellValueFactory(new PropertyValueFactory<>("size"));
-
-        // Cột Màu
         colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
 
-        // Cột Hành động
         actionsColumn.setCellFactory(new Callback<TableColumn<Product, Void>, TableCell<Product, Void>>() {
             @Override
             public TableCell<Product, Void> call(TableColumn<Product, Void> param) {
@@ -77,15 +73,12 @@ public class CartViewController {
                     {
                         deleteButton.setOnAction(event -> {
                             Product product = getTableView().getItems().get(getIndex());
-                            // Hiển thị thông báo xác nhận trước khi xóa sản phẩm
                             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                            alert.setTitle("Xác nhận xóa");
+                            alert.setTitle("Confirm Delete");
                             alert.setHeaderText(null);
-                            alert.setContentText("Bạn có chắc chắn muốn xóa sản phẩm " + product.getName() + " khỏi giỏ hàng?");
-                            // Xử lý kết quả từ thông báo xác nhận
+                            alert.setContentText("Are you sure you want to delete " + product.getName() + " from the cart?");
                             alert.showAndWait().ifPresent(response -> {
                                 if (response == ButtonType.OK) {
-                                    // Nếu người dùng đồng ý, xóa sản phẩm khỏi giỏ hàng
                                     cartItems.remove(product);
                                     if (cart != null) {
                                         cart.removeProduct(product);
@@ -93,7 +86,6 @@ public class CartViewController {
                                     }
                                     updateTotalAmount();
                                 }
-                                // Nếu người dùng không đồng ý, không làm gì cả
                             });
                         });
                     }
@@ -106,6 +98,7 @@ public class CartViewController {
                 };
             }
         });
+
         loadCartItemsFromFile();
         cartTableView.setItems(cartItems);
         updateTotalAmount();
@@ -122,6 +115,7 @@ public class CartViewController {
         double total = cartItems.stream().mapToDouble(p -> p.getPrice() * p.getQuantity()).sum();
         totalAmountLabel.setText(String.format("$%.2f", total));
     }
+
     public void loadCartItemsFromFile() {
         cartItems.clear();
         String filePath = "Cart.txt";
@@ -146,9 +140,9 @@ public class CartViewController {
             e.printStackTrace();
         }
     }
+
     public void saveCartToFile() {
         String filePath = "Cart.txt";
-
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(filePath)))) {
             for (Product product : cartItems) {
                 pw.printf("%d,%s,%.2f,%d,%s,%s,%s%n",
@@ -164,11 +158,13 @@ public class CartViewController {
             e.printStackTrace();
         }
     }
+
     private void saveOrderToFile(String username, ObservableList<Product> products, double totalAmount) {
         String filePath = "allOrder.txt";
+        int totalProducts = products.size(); // Tổng số sản phẩm trong đơn hàng
 
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)))) {
-            // Tạo danh sách các sản phẩm dưới dạng chuỗi
+            // Xây dựng chuỗi chứa thông tin chi tiết về sản phẩm
             StringBuilder productDetails = new StringBuilder();
             for (Product product : products) {
                 if (productDetails.length() > 0) {
@@ -183,16 +179,15 @@ public class CartViewController {
                         product.getColor(),
                         product.getSize()));
             }
-
-            // Ghi thông tin đơn hàng vào file
-            pw.printf("%s,%s,%.2f,%s%n",
-                    username, // Tên người dùng
-                    productDetails.toString(), // Danh sách sản phẩm
-                    totalAmount, // Tổng tiền
-                    "Waiting for payment" // Trạng thái đơn hàng
+            pw.printf("%s,%d,%s,%.2f,%s%n",
+                    username,                       // Tên người dùng
+                    totalProducts,                  // Tổng số sản phẩm
+                    productDetails.toString(),      // Chi tiết sản phẩm
+                    totalAmount,                    // Tổng giá
+                    "Waiting for payment"           // Trạng thái đơn hàng
             );
         } catch (IOException e) {
-            e.printStackTrace(); // Cân nhắc thay thế bằng logging hoặc thông báo cho người dùng
+            e.printStackTrace();
         }
     }
 
@@ -208,24 +203,18 @@ public class CartViewController {
 
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                // Lấy tên người dùng hiện tại
                 String currentUser = getCurrentUser();
-
-                // Lưu thông tin đơn hàng vào file cho tất cả sản phẩm trong giỏ hàng
                 saveOrderToFile(currentUser, cartItems, totalAmount);
 
-                // Xóa giỏ hàng và cập nhật UI
                 cartItems.clear();
-                updateTotalAmount(); // Cập nhật tổng số tiền
+                updateTotalAmount();
 
-                // Thông báo cho người dùng
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Payment Successful");
                 successAlert.setHeaderText(null);
                 successAlert.setContentText("Your order has been placed successfully.");
                 successAlert.show();
 
-                // Đóng cửa sổ giỏ hàng (Cart View)
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.close();
             }
@@ -233,13 +222,7 @@ public class CartViewController {
     }
 
     private String getCurrentUser() {
-        // Return the username of the currently logged-in user
         User currentUser = UserSession.getCurrentUser();
         return (currentUser != null) ? currentUser.getUsername() : "Unknown User";
     }
-
 }
-
-
-
-
