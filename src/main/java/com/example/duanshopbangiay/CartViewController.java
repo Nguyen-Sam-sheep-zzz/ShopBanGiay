@@ -15,6 +15,7 @@ import javafx.util.Callback;
 import javafx.event.ActionEvent;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class CartViewController {
     @FXML
@@ -158,9 +159,14 @@ public class CartViewController {
             e.printStackTrace();
         }
     }
-
-    private void saveOrderToFile(String username, ObservableList<Product> products, double totalAmount) {
+    private void saveOrderToFile(Order order) {
         String filePath = "allOrder.txt";
+        int orderId = order.getId(); // Lấy ID đơn hàng từ đối tượng Order
+        String customerName = order.getCustomerName(); // Lấy tên khách hàng
+        ObservableList<Product> products = order.getProducts(); // Lấy danh sách sản phẩm
+        double totalAmount = order.getTotalAmount(); // Lấy tổng giá
+        String status = order.getStatus(); // Lấy trạng thái đơn hàng
+
         int totalProducts = products.size(); // Tổng số sản phẩm trong đơn hàng
 
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)))) {
@@ -179,12 +185,13 @@ public class CartViewController {
                         product.getColor(),
                         product.getSize()));
             }
-            pw.printf("%s,%d,%s,%.2f,%s%n",
-                    username,                       // Tên người dùng
+            pw.printf("%d,%s,%d,%s,%.2f,%s%n",
+                    orderId,                        // ID đơn hàng
+                    customerName,                   // Tên người dùng
                     totalProducts,                  // Tổng số sản phẩm
                     productDetails.toString(),      // Chi tiết sản phẩm
                     totalAmount,                    // Tổng giá
-                    "Waiting for payment"           // Trạng thái đơn hàng
+                    status                         // Trạng thái đơn hàng
             );
         } catch (IOException e) {
             e.printStackTrace();
@@ -194,8 +201,10 @@ public class CartViewController {
 
     @FXML
     private void handlePayNow(ActionEvent event) {
+        // Tính tổng số tiền của đơn hàng từ danh sách sản phẩm trong giỏ hàng
         double totalAmount = cartItems.stream().mapToDouble(p -> p.getPrice() * p.getQuantity()).sum();
 
+        // Hiển thị hộp thoại xác nhận thanh toán
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Payment");
         alert.setHeaderText(null);
@@ -203,23 +212,42 @@ public class CartViewController {
 
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
+                // Lấy thông tin người dùng hiện tại
                 String currentUser = getCurrentUser();
-                saveOrderToFile(currentUser, cartItems, totalAmount);
 
+                // Tạo đối tượng Order với các thông tin cần thiết
+                int orderId = OrderUtils.getNextOrderId(); // Lấy ID đơn hàng tiếp theo
+                OrderUtils.updateLastOrderId(orderId); // Cập nhật ID đơn hàng cuối cùng
+
+                Order order = new Order(
+                        orderId,
+                        currentUser,
+                        new ArrayList<>(cartItems), // Chuyển đổi ObservableList thành ArrayList
+                        totalAmount,
+                        "Waiting for payment" // Trạng thái đơn hàng
+                );
+
+                // Lưu đơn hàng vào tệp
+                saveOrderToFile(order);
+
+                // Xóa giỏ hàng và cập nhật tổng số tiền
                 cartItems.clear();
                 updateTotalAmount();
 
+                // Hiển thị thông báo thành công
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Payment Successful");
                 successAlert.setHeaderText(null);
                 successAlert.setContentText("Your order has been placed successfully.");
                 successAlert.show();
 
+                // Đóng cửa sổ hiện tại
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.close();
             }
         });
     }
+
 
     private String getCurrentUser() {
         User currentUser = UserSession.getCurrentUser();

@@ -108,7 +108,7 @@ public class RegisterController {
 
     // Load users from file with relative path
     private static void loadUsers() {
-        Path path = Paths.get("src/main/resources/users.txt");
+        Path path = Paths.get("users.txt");
         try (BufferedReader reader = new BufferedReader(new FileReader(path.toFile()))) {
             String line;
             while ((line = reader.readLine()) != null) {

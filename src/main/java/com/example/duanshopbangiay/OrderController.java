@@ -1,6 +1,5 @@
 package com.example.duanshopbangiay;
 
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,12 +12,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,9 +24,11 @@ public class OrderController {
     @FXML
     private TableView<OrderDisplay> orderTable;
     @FXML
+    private TableColumn<OrderDisplay, String> orderIdColumn;
+    @FXML
     private TableColumn<OrderDisplay, String> customerNameColumn;
     @FXML
-    private TableColumn<OrderDisplay, String> totalProducts;
+    private TableColumn<OrderDisplay, String> totalProductsColumn;
     @FXML
     private TableColumn<OrderDisplay, String> idProductColumn;
     @FXML
@@ -48,15 +47,16 @@ public class OrderController {
     private TableColumn<OrderDisplay, String> totalAmountColumn;
     @FXML
     private TableColumn<OrderDisplay, String> orderStatusColumn;
-    @FXML
-    private TableColumn<OrderDisplay, String> actionColumn;
 
     private ObservableList<OrderDisplay> orderList;
+
     @FXML
     public void initialize() {
         orderList = FXCollections.observableArrayList();
+
+        orderIdColumn.setCellValueFactory(new PropertyValueFactory<>("orderId"));
         customerNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-        totalProducts.setCellValueFactory(new PropertyValueFactory<>("totalProducts"));
+        totalProductsColumn.setCellValueFactory(new PropertyValueFactory<>("totalProducts"));
 
         idProductColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
                 cellData.getValue().getProducts().stream()
@@ -72,7 +72,6 @@ public class OrderController {
                         .orElse("")
         ));
 
-        // Update the imageColumn cell factory
         imageColumn.setCellValueFactory(cellData -> cellData.getValue().productImagesProperty());
         imageColumn.setCellFactory(column -> new TableCell<OrderDisplay, String>() {
             @Override
@@ -112,6 +111,7 @@ public class OrderController {
                         .reduce((a, b) -> a + ", " + b)
                         .orElse("")
         ));
+
         quantityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
                 cellData.getValue().getProducts().stream()
                         .map(Product::getQuantity)
@@ -119,25 +119,30 @@ public class OrderController {
                         .reduce((a, b) -> a + ", " + b)
                         .orElse("")
         ));
+
         colorColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
                 cellData.getValue().getProducts().stream()
                         .map(Product::getColor)
                         .reduce((a, b) -> a + ", " + b)
                         .orElse("")
         ));
+
         sizeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
                 cellData.getValue().getProducts().stream()
                         .map(Product::getSize)
                         .reduce((a, b) -> a + ", " + b)
                         .orElse("")
         ));
+
         totalAmountColumn.setCellValueFactory(new PropertyValueFactory<>("totalAmount"));
         orderStatusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
+        idProductColumn.setVisible(false);
         productNameColumn.setVisible(false);
         priceColumn.setVisible(false);
         quantityColumn.setVisible(false);
-
+        colorColumn.setVisible(false);
+        sizeColumn.setVisible(false);
 
         loadOrdersFromFile("allOrder.txt");
         orderTable.setItems(orderList);
@@ -148,29 +153,31 @@ public class OrderController {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length > 2) {
-                    String customerName = parts[0];
-                    int totalProducts = Integer.parseInt(parts[1]);
+                if (parts.length == 6) { // Đảm bảo số phần tử đúng
+                    int orderId = Integer.parseInt(parts[0].trim());
+                    String customerName = parts[1].trim();
+                    int totalProducts = Integer.parseInt(parts[2].trim());
+                    String[] productDetails = parts[3].split(";");
                     List<Product> products = new ArrayList<>();
-                    double totalAmount = Double.parseDouble(parts[parts.length - 2]);
-                    String status = parts[parts.length - 1];
-
-                    String[] productDetails = parts[2].split(";");
                     for (String detail : productDetails) {
                         String[] productInfo = detail.split(":");
-                        int id = Integer.parseInt(productInfo[0]);
-                        String name = productInfo[1];
-                        String imagePath = productInfo[2];
-                        double price = Double.parseDouble(productInfo[3]);
-                        int quantity = Integer.parseInt(productInfo[4]);
-                        String color = productInfo[5];
-                        String size = productInfo[6];
+                        if (productInfo.length == 7) { // Đảm bảo số phần tử đúng
+                            int id = Integer.parseInt(productInfo[0].trim());
+                            String name = productInfo[1].trim();
+                            String imagePath = productInfo[2].trim();
+                            double price = Double.parseDouble(productInfo[3].trim());
+                            int quantity = Integer.parseInt(productInfo[4].trim());
+                            String color = productInfo[5].trim();
+                            String size = productInfo[6].trim();
 
-                        Product product = new Product(id, name, price, quantity, color, size, imagePath);
-                        products.add(product);
+                            Product product = new Product(id, name, price, quantity, color, size, imagePath);
+                            products.add(product);
+                        }
                     }
+                    double totalAmount = Double.parseDouble(parts[4].trim());
+                    String status = parts[5].trim();
 
-                    OrderDisplay orderDisplay = new OrderDisplay(customerName, products, totalAmount, status);
+                    OrderDisplay orderDisplay = new OrderDisplay(orderId, customerName, products, totalAmount, status);
                     orderList.add(orderDisplay);
                 }
             }
@@ -180,17 +187,20 @@ public class OrderController {
     }
 
     public void switchToDisplayShop(ActionEvent event) throws IOException {
-
+        // Chuyển đến giao diện cửa hàng (cần được triển khai)
     }
+
     public static class OrderDisplay {
+        private final SimpleStringProperty orderId;
         private final SimpleStringProperty customerName;
         private final SimpleStringProperty totalProducts;
         private final ObservableList<Product> products;
         private final SimpleStringProperty totalAmount;
         private final SimpleStringProperty status;
-        private final SimpleStringProperty productImages; // Add this property
+        private final SimpleStringProperty productImages;
 
-        public OrderDisplay(String customerName, List<Product> products, double totalAmount, String status) {
+        public OrderDisplay(int orderId, String customerName, List<Product> products, double totalAmount, String status) {
+            this.orderId = new SimpleStringProperty(String.valueOf(orderId));
             this.customerName = new SimpleStringProperty(customerName);
             this.totalProducts = new SimpleStringProperty(String.valueOf(products.size()));
             this.products = FXCollections.observableArrayList(products);
@@ -206,6 +216,14 @@ public class OrderController {
                 images.append(product.getImagePath());
             }
             this.productImages = new SimpleStringProperty(images.toString());
+        }
+
+        public String getOrderId() {
+            return orderId.get();
+        }
+
+        public SimpleStringProperty orderIdProperty() {
+            return orderId;
         }
 
         public String getCustomerName() {
@@ -252,5 +270,4 @@ public class OrderController {
             return productImages;
         }
     }
-
 }
