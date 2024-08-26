@@ -1,18 +1,20 @@
 package com.example.duanshopbangiay;
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.awt.event.MouseEvent;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class UserShopController implements Initializable {
+
     @FXML
     private TextField searchTextField;
 
@@ -45,6 +48,8 @@ public class UserShopController implements Initializable {
 
     @FXML
     private GridPane grid;
+    @FXML
+    private HBox HboxLogout;
 
     @FXML
     private ImageView cartIcon; // Thêm ImageView cho giỏ hàng
@@ -60,7 +65,6 @@ public class UserShopController implements Initializable {
     private Stage cartViewStage;
 
     private FXMLLoader cartViewLoader;
-
 
     private List<Product> loadProductsFromFile() {
         List<Product> products = new ArrayList<>();
@@ -152,6 +156,10 @@ public class UserShopController implements Initializable {
             throw new RuntimeException(e);
         }
 
+        HboxLogout.setOnMouseClicked(event -> {
+            switchToLoginScreen();
+        });
+
         // Thiết lập sự kiện cho giỏ hàng
         cartIcon.setOnMouseClicked(event -> showCartView());
     }
@@ -168,7 +176,7 @@ public class UserShopController implements Initializable {
 
                 cartViewStage = new Stage();
                 cartViewStage.setScene(new Scene(cartView));
-                cartViewStage.setTitle("Giỏ hàng");
+                cartViewStage.setTitle("Cart");
 
                 // Đăng ký sự kiện khi cửa sổ đóng
                 cartViewStage.setOnHiding(event -> {
@@ -190,18 +198,6 @@ public class UserShopController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @FXML
-    private void onQuantityChange() {
-        Integer selectedQuantity = quantityComboBox.getValue();
-        // Xử lý thay đổi số lượng nếu cần
-    }
-
-    @FXML
-    private void onSizeChange() {
-        String selectedSize = sizeComboBox.getValue();
-        // Xử lý thay đổi kích cỡ nếu cần
     }
 
     private void searchProduct() {
@@ -269,6 +265,7 @@ public class UserShopController implements Initializable {
             cartViewController.setCart(cart);
         }
     }
+
     private void saveCartToFile() {
         String filePath = "Cart.txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
@@ -351,4 +348,18 @@ public class UserShopController implements Initializable {
             alert.showAndWait();
         }
     }
+
+    @FXML
+    private void switchToLoginScreen() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("DisplayLogin.fxml"));
+            Parent loginRoot = loader.load();
+            Stage stage = (Stage) HboxLogout.getScene().getWindow();
+            stage.setScene(new Scene(loginRoot));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+

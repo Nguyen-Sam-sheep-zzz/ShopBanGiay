@@ -31,7 +31,6 @@ public class RegisterController {
 
     private static List<User> userList = new ArrayList<>();
 
-    // Static block to load users when the class is loaded
     static {
         loadUsers();
     }
@@ -95,7 +94,7 @@ public class RegisterController {
 
     // Save all users to file with relative path
     private static void saveUsers() {
-        Path path = Paths.get("src/main/resources/users.txt");
+        Path path = Paths.get("users.txt");
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path.toFile()))) {
             for (User user : userList) {
                 writer.write(user.getUsername() + "," + user.getPassword() + "," + user.getRole());

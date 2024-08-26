@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -13,6 +12,8 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.event.ActionEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -159,15 +160,20 @@ public class CartViewController {
             e.printStackTrace();
         }
     }
-    private void saveOrderToFile(Order order) {
+    private void saveOrderToFile(OrderDisplay orderDisplay) {
         String filePath = "allOrder.txt";
-        int orderId = order.getId(); // Lấy ID đơn hàng từ đối tượng Order
-        String customerName = order.getCustomerName(); // Lấy tên khách hàng
-        ObservableList<Product> products = order.getProducts(); // Lấy danh sách sản phẩm
-        double totalAmount = order.getTotalAmount(); // Lấy tổng giá
-        String status = order.getStatus(); // Lấy trạng thái đơn hàng
+        int orderId = Integer.parseInt(orderDisplay.getOrderId()); // Lấy ID đơn hàng từ đối tượng Order
+        String customerName = orderDisplay.getCustomerName(); // Lấy tên khách hàng
+        ObservableList<Product> products = orderDisplay.getProducts(); // Lấy danh sách sản phẩm
+        double totalAmount = Double.parseDouble(orderDisplay.getTotalAmount()); // Lấy tổng giá
+        String status = orderDisplay.getStatus(); // Lấy trạng thái đơn hàng
 
         int totalProducts = products.size(); // Tổng số sản phẩm trong đơn hàng
+
+        // Lấy thời gian hiện tại và định dạng nó
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = now.format(formatter);
 
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)))) {
             // Xây dựng chuỗi chứa thông tin chi tiết về sản phẩm
@@ -185,20 +191,19 @@ public class CartViewController {
                         product.getColor(),
                         product.getSize()));
             }
-            pw.printf("%d,%s,%d,%s,%.2f,%s%n",
+            pw.printf("%d,%s,%d,%s,%.2f,%s,%s%n",
                     orderId,                        // ID đơn hàng
                     customerName,                   // Tên người dùng
                     totalProducts,                  // Tổng số sản phẩm
                     productDetails.toString(),      // Chi tiết sản phẩm
                     totalAmount,                    // Tổng giá
-                    status                         // Trạng thái đơn hàng
+                    status,                         // Trạng thái đơn hàng
+                    formattedDateTime               // Thời gian đặt hàng
             );
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
     @FXML
     private void handlePayNow(ActionEvent event) {
         // Tính tổng số tiền của đơn hàng từ danh sách sản phẩm trong giỏ hàng
@@ -206,29 +211,33 @@ public class CartViewController {
 
         // Hiển thị hộp thoại xác nhận thanh toán
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm Payment");
+        alert.setTitle("Payment Confirmation");
         alert.setHeaderText(null);
-        alert.setContentText("The total amount for your order is $" + String.format("%.2f", totalAmount) + ". Do you want to proceed with the payment?");
+        alert.setContentText("The total amount for your order is $" + String.format("%.2f", totalAmount) + ".Do you want to continue payment?");
 
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 // Lấy thông tin người dùng hiện tại
                 String currentUser = getCurrentUser();
 
+                // Lấy thời gian hiện tại
+                LocalDateTime orderTime = LocalDateTime.now();
+
                 // Tạo đối tượng Order với các thông tin cần thiết
                 int orderId = OrderUtils.getNextOrderId(); // Lấy ID đơn hàng tiếp theo
                 OrderUtils.updateLastOrderId(orderId); // Cập nhật ID đơn hàng cuối cùng
 
-                Order order = new Order(
+                OrderDisplay orderDisplay = new OrderDisplay(
                         orderId,
                         currentUser,
                         new ArrayList<>(cartItems), // Chuyển đổi ObservableList thành ArrayList
                         totalAmount,
-                        "Waiting for payment" // Trạng thái đơn hàng
+                        "Waiting for payment", // Trạng thái đơn hàng
+                        orderTime // Thêm thời gian đơn hàng
                 );
 
                 // Lưu đơn hàng vào tệp
-                saveOrderToFile(order);
+                saveOrderToFile(orderDisplay);
 
                 // Xóa giỏ hàng và cập nhật tổng số tiền
                 cartItems.clear();
@@ -247,6 +256,7 @@ public class CartViewController {
             }
         });
     }
+
 
 
     private String getCurrentUser() {

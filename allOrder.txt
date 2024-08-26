@@ -1,3 +1,1 @@
-2,Unknown User,3,1:Jordan 1 Pine:/img/Green-remove-preview.png:500.00:1:228B22:36;2:Jordan 1 Ocean:/img/MidN-remove-preview.png:100.00:1:0099CC:36;5:Jordan 1 R&W:/img/Red-remove-preview.png:900.00:1:B22222:36,1500.00,Waiting for payment
-3,Unknown User,1,4:Jordan 1 Rose:/img/Pink-remove-preview.png:800.00:1:FF1493:36,800.00,Waiting for payment
-4,Unknown User,3,1:Jordan 1 Pine:/img/Green-remove-preview.png:500.00:1:228B22:36;2:Jordan 1 Ocean:/img/MidN-remove-preview.png:100.00:1:0099CC:36;4:Jordan 1 Rose:/img/Pink-remove-preview.png:800.00:1:FF1493:36,1400.00,Waiting for payment
+8,Unknown User,1,2:Jordan 1 Ocean:/img/MidN-remove-preview.png:100.0:1:0099CC:36;1,900.0,canceled,2024-08-25 16:10:47

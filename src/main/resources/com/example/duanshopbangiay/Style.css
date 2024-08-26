@@ -40,3 +40,11 @@
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 30;
 }
+.free-delivery-card {
+   -fx-background-color: #DCDCDC;
+   -fx-background-radius: 30;
+}
+.no-background-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent; /* Xóa viền nếu cần */
+}

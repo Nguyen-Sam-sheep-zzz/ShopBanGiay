@@ -66,11 +66,7 @@ public class ProductListController {
         colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
         sizeColumn.setCellValueFactory(new PropertyValueFactory<>("size"));
         imageColumn.setCellValueFactory(new PropertyValueFactory<>("imagePath"));
-        // Ẩn cột màu
-        if (colorColumn != null) {
-            colorColumn.setVisible(false);
-        }
-
+        colorColumn.setVisible(false);
         imageColumn.setCellFactory(col -> new TableCell<Product, String>() {
             private final ImageView imageView = new ImageView();
 
@@ -404,7 +400,6 @@ public class ProductListController {
     }
 
     private void saveProductsToFile() {
-        System.out.println("Number of products to save: " + productList.size());
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("products.txt"))) {
             for (Product product : productList) {
                 writer.write(product.getId() + "," +
@@ -420,6 +415,4 @@ public class ProductListController {
             e.printStackTrace();
         }
     }
-
-
 }
