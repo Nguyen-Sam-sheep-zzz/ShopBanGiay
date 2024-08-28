@@ -24,10 +24,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
 public class ProductListController {
-
-    private Stage stage;
-    private Scene scene;
-
+    
     @FXML
     private TableView<Product> productTableView;
     @FXML
@@ -240,8 +237,8 @@ public class ProductListController {
 
     public void switchToDisplayLogin(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(LoginApplication.class.getResource("DisplayLogin.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setTitle("Login");
         stage.setScene(scene);
         stage.show();
@@ -249,8 +246,8 @@ public class ProductListController {
 
     public void switchToOrderList(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(LoginApplication.class.getResource("OrderList.fxml"));
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setTitle("Order List");
         stage.setScene(scene);
         stage.show();

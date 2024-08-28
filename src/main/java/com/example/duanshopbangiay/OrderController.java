@@ -239,30 +239,26 @@ public class OrderController {
         loadOrdersFromFile();
         orderTable.setItems(orderList);
     }
-
     private void loadOrdersFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader("allOrder.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length < 6) {
-                    System.out.println("Dữ liệu không đầy đủ: " + line);
-                    continue; // Bỏ qua dòng dữ liệu không hợp lệ
+                    continue;
                 }
                 try {
                     // Đọc thông tin đơn hàng
                     int orderId = Integer.parseInt(parts[0].trim());
                     String customerName = parts[1].trim();
-                    int totalProducts = Integer.parseInt(parts[2].trim());
-
+                    String totalProducts = parts[2].trim();
                     // Xử lý sản phẩm
-                    String[] productStrings = parts[3].split("; ");
+                    String[] productStrings = parts[3].split(";"); // Chỉ sử dụng ";" làm dấu phân cách
                     List<Product> products = new ArrayList<>();
                     for (String productString : productStrings) {
                         String[] productParts = productString.split(":");
                         if (productParts.length < 7) {
-                            System.out.println("Dữ liệu sản phẩm không đầy đủ: " + productString);
-                            continue; // Bỏ qua sản phẩm không hợp lệ
+                            continue;
                         }
                         int id = Integer.parseInt(productParts[0]);
                         String name = productParts[1];
@@ -281,7 +277,6 @@ public class OrderController {
                     OrderDisplay order = new OrderDisplay(orderId, customerName, products, totalAmount, status, orderTime);
                     orderList.add(order);
                 } catch (NumberFormatException | DateTimeParseException e) {
-                    System.out.println("Lỗi khi phân tích dữ liệu: " + line);
                     e.printStackTrace();
                 }
             }

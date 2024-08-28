@@ -243,6 +243,8 @@ public class CartViewController {
                 cartItems.clear();
                 updateTotalAmount();
 
+                clearCartFile();
+
                 // Hiển thị thông báo thành công
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Payment Successful");
@@ -256,8 +258,15 @@ public class CartViewController {
             }
         });
     }
-
-
+    private void clearCartFile() {
+        try {
+            FileWriter fileWriter = new FileWriter("Cart.txt", false);
+            fileWriter.write(""); // Ghi chuỗi rỗng vào tệp để xóa toàn bộ nội dung
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private String getCurrentUser() {
         User currentUser = UserSession.getCurrentUser();
