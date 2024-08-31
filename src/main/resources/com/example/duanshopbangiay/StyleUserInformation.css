@@ -1,0 +1,22 @@
+.primary-color{
+    -fx-background-color: #CD853F;
+}
+.secondary-color{
+    -fx-background-color: #FFE4B5;
+}
+.button{
+    -fx-background-color: #CD950C;
+    -fx-background-radius: 30;
+}
+.text-input{
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-boder-width:0 0 1 0;
+    -fx-border-color: #F8F8FF;
+}
+.selected-border{
+    -fx-background-color: #FFF;
+    -fx-boder-width: 0 0 3 0;
+}
+.selected:hover{
+    -fx-background-color: #363636;
+}

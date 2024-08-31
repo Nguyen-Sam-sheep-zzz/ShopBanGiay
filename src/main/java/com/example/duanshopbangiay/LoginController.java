@@ -22,10 +22,10 @@ public class LoginController {
     private Scene scene;
 
     // Admin data (in a real application, this would be loaded from a database)
-    Admin admin1 = new Admin("NhanSam", "123", "admin");
-    Admin admin2 = new Admin("ChiAnh", "123", "admin");
-    Admin admin3 = new Admin("VietTam", "123", "admin");
-    Admin admin4 = new Admin("DucDuy", "123", "admin");
+    Admin admin1 = new Admin("NhanSam", "123" );
+    Admin admin2 = new Admin("ChiAnh", "123");
+    Admin admin3 = new Admin("VietTam", "123");
+    Admin admin4 = new Admin("DucDuy", "123");
 
     // User data (in a real application, this would be loaded from a database)
     List<User> userList = RegisterController.getUserList();

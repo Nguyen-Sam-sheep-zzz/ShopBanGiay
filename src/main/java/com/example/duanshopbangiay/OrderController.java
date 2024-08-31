@@ -36,9 +36,9 @@ import javafx.stage.Stage;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.util.stream.Collectors;
 
 public class OrderController {
-
     @FXML
     private TableView<OrderDisplay> orderTable;
     @FXML
@@ -71,6 +71,14 @@ public class OrderController {
     private TableColumn<OrderDisplay, String> actionColumn;
 
     private ObservableList<OrderDisplay> orderList;
+
+    private User currentUser;
+
+    @FXML
+    private Button buttonDisplayShopAdmin;
+    @FXML
+    private Button buttonDisplayShopUser;
+
 
     @FXML
     public void initialize() {
@@ -401,5 +409,81 @@ public class OrderController {
         stage.setTitle("DisplayShop");
         stage.setScene(scene);
         stage.show();
+    }
+    public void switchToDisplayUser(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(LoginApplication.class.getResource("UserInformation.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setTitle("DisplayShop");
+        stage.setScene(scene);
+        stage.show();
+    }
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+        loadOrders();
+        buttonDisplayShopAdmin.setVisible(false);
+        buttonDisplayShopAdmin.setManaged(false);
+        actionColumn.setVisible(false);
+        buttonDisplayShopUser.setVisible(true);
+        buttonDisplayShopUser.setManaged(true);
+
+    }
+    private void loadOrders() {
+        // Đọc dữ liệu từ file và lọc đơn hàng theo currentUser
+        List<OrderDisplay> orders = readOrdersFromFile(); // Phương thức để đọc dữ liệu đơn hàng từ file
+
+        List<OrderDisplay> filteredOrders = orders.stream()
+                .filter(order -> order.getCustomerName().equals(currentUser.getUsername()))
+                .collect(Collectors.toList());
+
+        // Cập nhật TableView với các đơn hàng đã lọc
+        orderTable.setItems(FXCollections.observableArrayList(filteredOrders));
+    }
+    private List<OrderDisplay> readOrdersFromFile() {
+        List<OrderDisplay> orders = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader("allOrder.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length < 6) {
+                    continue;
+                }
+                try {
+                    // Đọc thông tin đơn hàng
+                    int orderId = Integer.parseInt(parts[0].trim());
+                    String customerName = parts[1].trim();
+                    String totalProducts = parts[2].trim();
+                    // Xử lý sản phẩm
+                    String[] productStrings = parts[3].split(";"); // Chỉ sử dụng ";" làm dấu phân cách
+                    List<Product> products = new ArrayList<>();
+                    for (String productString : productStrings) {
+                        String[] productParts = productString.split(":");
+                        if (productParts.length < 7) {
+                            continue;
+                        }
+                        int id = Integer.parseInt(productParts[0]);
+                        String name = productParts[1];
+                        String imagePath = productParts[2];
+                        double price = Double.parseDouble(productParts[3]);
+                        int quantity = Integer.parseInt(productParts[4]);
+                        String color = productParts[5];
+                        String size = productParts[6];
+                        products.add(new Product(id, name, price, quantity, color, size, imagePath));
+                    }
+
+                    double totalAmount = Double.parseDouble(parts[4].trim());
+                    String status = parts[5].trim();
+                    LocalDateTime orderTime = LocalDateTime.parse(parts[6].trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+                    OrderDisplay order = new OrderDisplay(orderId, customerName, products, totalAmount, status, orderTime);
+                    orders.add(order);
+                } catch (NumberFormatException | DateTimeParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return orders;
     }
 }

@@ -6,11 +6,11 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.duanshopbangiay.RegisterController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580" prefWidth="620.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.duanshopbangiay.RegisterController">
     <left>
-        <AnchorPane prefHeight="407.0" prefWidth="228.0" style="-fx-background-color: #263F73;" BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="600.0" prefWidth="228.0" style="-fx-background-color: #263F73;" BorderPane.alignment="CENTER">
             <children>
-                <Label alignment="CENTER" layoutX="2.0" layoutY="152.0" prefHeight="21.0" prefWidth="243.0" text="Nike" textFill="#f8f6f6">
+                <Label alignment="CENTER" layoutX="3.0" layoutY="235.0" prefHeight="21.0" prefWidth="243.0" text="Nike" textFill="#f8f6f6">
                     <font>
                         <Font name="Verdana Bold" size="24.0" />
                     </font>
@@ -18,7 +18,7 @@
                         <DropShadow />
                     </effect>
                 </Label>
-                <Label alignment="CENTER" layoutX="2.0" layoutY="200.0" prefHeight="26.0" prefWidth="242.0" text="Just do it" textFill="#f8f6f6">
+                <Label alignment="CENTER" layoutY="290.0" prefHeight="26.0" prefWidth="242.0" text="Just do it" textFill="#f8f6f6">
                     <font>
                         <Font name="Candara" size="22.0" />
                     </font>
@@ -26,13 +26,13 @@
                         <DropShadow />
                     </effect>
                 </Label>
-                <Line endX="107.0" layoutX="103.0" layoutY="191.0" startX="-64.0" stroke="#f2f2f2" strokeWidth="2.0">
+                <Line endX="107.0" layoutX="101.0" layoutY="277.0" startX="-64.0" stroke="#f2f2f2" strokeWidth="2.0">
                     <effect>
                         <DropShadow />
                     </effect>
                 </Line>
-                <Circle fill="TRANSPARENT" layoutX="124.0" layoutY="191.0" radius="100.0" stroke="#8a74743d" strokeType="INSIDE" />
-                <Circle fill="#e6eef5" layoutX="68.0" layoutY="108.0" radius="17.0" stroke="#686161" strokeType="INSIDE">
+                <Circle fill="TRANSPARENT" layoutX="124.0" layoutY="277.0" radius="100.0" stroke="#8a74743d" strokeType="INSIDE" />
+                <Circle fill="#e6eef5" layoutX="59.0" layoutY="206.0" radius="17.0" stroke="#686161" strokeType="INSIDE">
                     <effect>
                         <InnerShadow />
                     </effect>
@@ -41,16 +41,11 @@
         </AnchorPane>
     </left>
     <center>
-        <AnchorPane prefHeight="431.0" prefWidth="410.0" BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="431.0" prefWidth="410.0" style="-fx-border-color: lightgray;" BorderPane.alignment="CENTER">
             <children>
                 <Label alignment="CENTER" layoutX="-1.0" layoutY="39.0" prefHeight="30.0" prefWidth="374.0" text="Register" textFill="#464242">
                     <font>
                         <Font name="Times New Roman Bold" size="24.0" />
-                    </font>
-                </Label>
-                <Label alignment="CENTER" layoutX="9.0" layoutY="148.0" prefHeight="26.0" prefWidth="92.0" text="Just do it" textFill="#f8f6f6">
-                    <font>
-                        <Font name="Candara" size="22.0" />
                     </font>
                 </Label>
                 <Label alignment="CENTER" layoutX="29.0" layoutY="100.0" prefHeight="26.0" prefWidth="83.0" text="Username :" textFill="#141414">
@@ -59,20 +54,44 @@
                     </font>
                 </Label>
                 <TextField fx:id="usernameField" layoutX="141.0" layoutY="98.0" prefHeight="31.0" prefWidth="203.0" promptText="Username" />
-                <Label alignment="CENTER" layoutX="29.0" layoutY="149.0" prefHeight="26.0" prefWidth="83.0" text="Password :" textFill="#403e3e">
+                <Label alignment="CENTER" layoutX="22.0" layoutY="149.0" prefHeight="26.0" prefWidth="104.0" text="Your real name:" textFill="#141414">
                     <font>
                         <Font name="Candara" size="14.0" />
                     </font>
                 </Label>
-                <Label alignment="CENTER" layoutX="14.0" layoutY="200.0" prefHeight="26.0" prefWidth="119.0" text="Confirm password :" textFill="#403e3e">
+                <TextField fx:id="realNameField" layoutX="141.0" layoutY="147.0" prefHeight="31.0" prefWidth="203.0" promptText="Real name" />
+                <Label alignment="CENTER" layoutX="22.0" layoutY="199.0" prefHeight="26.0" prefWidth="104.0" text="Gender:" textFill="#141414">
                     <font>
                         <Font name="Candara" size="14.0" />
                     </font>
                 </Label>
-                <PasswordField fx:id="passwordField" layoutX="141.0" layoutY="146.0" prefHeight="31.0" prefWidth="203.0" promptText="Password" />
-                <PasswordField fx:id="confirmPasswordField" layoutX="141.0" layoutY="197.0" prefHeight="31.0" prefWidth="203.0" promptText="Confirm password" />
-                <Button alignment="CENTER" layoutX="51.0" layoutY="284.0" mnemonicParsing="false" onAction="#handleRegisterButtonAction" prefHeight="37.0" prefWidth="123.0" style="-fx-background-color: #263F73;" text="Register" textFill="#e5e5eb" />
-                <Button alignment="CENTER" layoutX="207.0" layoutY="284.0" mnemonicParsing="false" onAction="#switchToDisplayLogin" prefHeight="37.0" prefWidth="128.0" style="-fx-background-color: #263F73;" text="Back" textFill="#e5e5eb" />
+                <ComboBox fx:id="genderComboBox" layoutX="141.0" layoutY="196.0" prefHeight="31.0" prefWidth="203.0" promptText="Choose gender" style="-fx-background-color: white; -fx-background-radius: 4; -fx-border-radius: 4; -fx-border-color: lightgray;" />
+                <Label alignment="CENTER" layoutX="22.0" layoutY="252.0" prefHeight="26.0" prefWidth="104.0" text="Phone :" textFill="#141414">
+                    <font>
+                        <Font name="Candara" size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="phoneField" layoutX="141.0" layoutY="250.0" prefHeight="31.0" prefWidth="203.0" promptText="Phone" />
+                <Label alignment="CENTER" layoutX="22.0" layoutY="300.0" prefHeight="26.0" prefWidth="104.0" text="Email:" textFill="#141414">
+                    <font>
+                        <Font name="Candara" size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="emailField" layoutX="141.0" layoutY="298.0" prefHeight="31.0" prefWidth="203.0" promptText="Email" />
+                <Label alignment="CENTER" layoutX="33.0" layoutY="349.0" prefHeight="26.0" prefWidth="83.0" text="Password :" textFill="#403e3e">
+                    <font>
+                        <Font name="Candara" size="14.0" />
+                    </font>
+                </Label>
+                <PasswordField fx:id="passwordField" layoutX="141.0" layoutY="347.0" prefHeight="31.0" prefWidth="203.0" promptText="Password" />
+                <Label alignment="CENTER" layoutX="15.0" layoutY="401.0" prefHeight="26.0" prefWidth="119.0" text="Confirm password :" textFill="#403e3e">
+                    <font>
+                        <Font name="Candara" size="14.0" />
+                    </font>
+                </Label>
+                <PasswordField fx:id="confirmPasswordField" layoutX="141.0" layoutY="399.0" prefHeight="31.0" prefWidth="203.0" promptText="Confirm password" />
+                <Button alignment="CENTER" layoutX="51.0" layoutY="485.0" mnemonicParsing="false" onAction="#handleRegisterButtonAction" prefHeight="37.0" prefWidth="123.0" style="-fx-background-color: #263F73;" text="Register" textFill="#e5e5eb" />
+                <Button alignment="CENTER" layoutX="216.0" layoutY="485.0" mnemonicParsing="false" onAction="#switchToDisplayLogin" prefHeight="37.0" prefWidth="128.0" style="-fx-background-color: #263F73;" text="Back" textFill="#e5e5eb" />
             </children>
         </AnchorPane>
     </center>

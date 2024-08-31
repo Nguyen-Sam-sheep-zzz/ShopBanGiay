@@ -9,14 +9,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class OrderDisplay {
-    private final SimpleStringProperty orderId;
-    private final SimpleStringProperty customerName;
-    private final SimpleStringProperty totalProducts;
-    private final ObservableList<Product> products;
-    private final SimpleStringProperty totalAmount;
-    private final SimpleStringProperty status;
-    private final SimpleStringProperty productImages;
-    private final SimpleObjectProperty<LocalDateTime> orderTime; // New attribute
+    private  SimpleStringProperty orderId;
+    private  SimpleStringProperty customerName;
+    private  SimpleStringProperty totalProducts;
+    private  ObservableList<Product> products;
+    private  SimpleStringProperty totalAmount;
+    private  SimpleStringProperty status;
+    private  SimpleStringProperty productImages;
+    private  SimpleObjectProperty<LocalDateTime> orderTime;// New attribute
+
+    public OrderDisplay(){
+
+    }
 
     public OrderDisplay(int orderId, String customerName, List<Product> products, double totalAmount, String status, LocalDateTime orderTime) {
         this.orderId = new SimpleStringProperty(String.valueOf(orderId));
@@ -60,6 +64,30 @@ public class OrderDisplay {
 
     public SimpleStringProperty totalProductsProperty() {
         return totalProducts;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId.set(orderId);
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName.set(customerName);
+    }
+
+    public void setTotalProducts(String totalProducts) {
+        this.totalProducts.set(totalProducts);
+    }
+
+    public void setProducts(ObservableList<Product> products) {
+        this.products = products;
+    }
+
+    public void setTotalAmount(String totalAmount) {
+        this.totalAmount.set(totalAmount);
+    }
+
+    public void setProductImages(String productImages) {
+        this.productImages.set(productImages);
     }
 
     public ObservableList<Product> getProducts() {

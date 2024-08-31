@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane stylesheets="@StyleUserInformation.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.duanshopbangiay.UserInformation">
+    <center>
+        <BorderPane prefHeight="800.0" prefWidth="1220.0" BorderPane.alignment="CENTER">
+            <left>
+                <VBox prefHeight="200.0" prefWidth="340.0" spacing="50.0" styleClass="primary-color" stylesheets="@StyleUserInformation.css" BorderPane.alignment="CENTER">
+                    <children>
+                        <VBox alignment="CENTER" prefHeight="238.0" prefWidth="340.0" spacing="15.0">
+                            <VBox.margin>
+                                <Insets top="50.0" />
+                            </VBox.margin>
+                            <children>
+                                <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../../img/office-man.png" />
+                                    </image>
+                                </ImageView>
+                                <Label text="we bear are bear" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="18.0" />
+                                    </font>
+                                </Label>
+                                <Button mnemonicParsing="false" onAction="#handleEditProfile" prefHeight="30.0" prefWidth="105.0" text="Edit Profile" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="15.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </VBox>
+                        <VBox prefHeight="320.0" prefWidth="340.0" spacing="15.0">
+                            <children>
+                                <HBox fx:id="HboxUserInformation" alignment="CENTER" prefHeight="45.0" prefWidth="200.0" styleClass="selected" stylesheets="@StyleUserInformation.css">
+                                    <children>
+                                        <Label fx:id="updatedInfoLabel" layoutX="20" layoutY="200" text="" />
+
+                                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../img/user.png" />
+                                            </image>
+                                        </ImageView>
+                                        <Label prefHeight="32.0" prefWidth="210.0" text="User information" textFill="WHITE">
+                                            <font>
+                                                <Font size="18.0" />
+                                            </font>
+                                            <padding>
+                                                <Insets left="15.0" />
+                                            </padding>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox fx:id="HboxOrderInformation" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="45.0" prefWidth="200.0" styleClass="selected" stylesheets="@StyleUserInformation.css">
+                                    <children>
+                                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../../img/carts.png" />
+                                            </image>
+                                        </ImageView>
+                                        <Label prefHeight="32.0" prefWidth="210.0" text="Your order information" textFill="WHITE">
+                                            <font>
+                                                <Font size="18.0" />
+                                            </font>
+                                            <padding>
+                                                <Insets left="15.0" />
+                                            </padding>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER" layoutX="10.0" layoutY="100.0" prefHeight="45.0" prefWidth="200.0" stylesheets="@StyleUserInformation.css">
+                                    <children>
+                                        <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleBackAction" prefHeight="46.0" prefWidth="170.0" text="Back" textFill="WHITE">
+
+                                            <font>
+                                                <Font name="System Bold" size="14.0" />
+                                            </font>
+                                        </Button>
+                                    </children>
+                           <VBox.margin>
+                              <Insets top="50.0" />
+                           </VBox.margin></HBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </VBox>
+            </left>
+            <center>
+                <VBox fx:id="displayProfileSettings" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="secondary-color" stylesheets="@StyleUserInformation.css" BorderPane.alignment="CENTER">
+                    <children>
+                        <VBox prefHeight="102.0" prefWidth="880.0">
+                            <children>
+                                <Label prefHeight="17.0" prefWidth="521.0" text="Profile Setting">
+                                    <font>
+                                        <Font name="System Bold" size="25.0" />
+                                    </font>
+                                    <padding>
+                                        <Insets bottom="30.0" left="50.0" right="50.0" top="30.0" />
+                                    </padding>
+                                </Label>
+                            </children>
+                        </VBox>
+                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+                            <children>
+                                <Label prefHeight="17.0" prefWidth="521.0" text="Profile details">
+                                    <font>
+                                        <Font name="System Bold" size="20.0" />
+                                    </font>
+                                    <padding>
+                                        <Insets bottom="30.0" left="50.0" right="50.0" top="30.0" />
+                                    </padding>
+                                </Label>
+                                <HBox alignment="CENTER_LEFT" prefHeight="20.0" prefWidth="880.0">
+                                    <children>
+                                        <Label prefHeight="5.0" prefWidth="171.0" text="Name">
+                                            <font>
+                                                <Font name="System Bold" size="14.0" />
+                                            </font>
+                                            <padding>
+                                                <Insets bottom="30.0" left="50.0" right="50.0" top="30.0" />
+                                            </padding>
+                                        </Label>
+                                        <Pane prefHeight="200.0" prefWidth="140.0">
+                                            <children>
+                                                <TextField fx:id="fullNameField" layoutX="39.0" layoutY="25.0" prefHeight="26.0" prefWidth="249.0" stylesheets="@StyleUserInformation.css" />
+                                            </children>
+                                        </Pane>
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="260.0" prefHeight="0.0" prefWidth="880.0">
+                                    <children>
+                                        <Pane prefHeight="7.0" prefWidth="326.0">
+                                            <children>
+                                                <HBox layoutX="53.0" layoutY="25.0" spacing="10.0" />
+                                            </children>
+                                        </Pane>
+                                    </children>
+                                </HBox>
+
+                                <HBox layoutX="10.0" layoutY="178.0" prefHeight="0.0" prefWidth="880.0">
+                                    <children>
+                                        <Label prefHeight="82.0" prefWidth="189.0" text="Male">
+                                            <font>
+                                                <Font name="System Bold" size="14.0" />
+                                            </font>
+                                            <padding>
+                                                <Insets bottom="30.0" left="50.0" right="50.0" top="30.0" />
+                                            </padding>
+                                        </Label>
+                                        <Pane prefHeight="7.0" prefWidth="326.0">
+                                            <children>
+                                                <ComboBox fx:id="genderComboBox" layoutX="21.0" layoutY="26.0" prefHeight="26.0" prefWidth="249.0" promptText="Male" style="-fx-background-color: transparent; -fx-background-radius: 4; -fx-border-radius: 4; -fx-border-color: lightgrey;" />
+                                            </children>
+                                        </Pane>
+                                    </children>
+                                </HBox>
+                                <Label layoutX="10.0" layoutY="10.0" prefHeight="17.0" prefWidth="521.0" text="Contact">
+                                    <font>
+                                        <Font name="System Bold" size="20.0" />
+                                    </font>
+                                    <padding>
+                                        <Insets bottom="30.0" left="50.0" right="50.0" top="30.0" />
+                                    </padding>
+                                </Label>
+                                <HBox layoutX="10.0" layoutY="260.0" prefHeight="0.0" prefWidth="880.0">
+                                    <children>
+                                        <Label prefHeight="5.0" prefWidth="171.0" text="Phone">
+                                            <font>
+                                                <Font name="System Bold" size="14.0" />
+                                            </font>
+                                            <padding>
+                                                <Insets bottom="30.0" left="50.0" right="50.0" top="30.0" />
+                                            </padding>
+                                        </Label>
+                                        <Pane prefHeight="7.0" prefWidth="326.0">
+                                            <children>
+                                                <TextField fx:id="phoneNumberField" layoutX="42.0" layoutY="28.0" onKeyReleased="#validatePhoneNumber" prefHeight="26.0" prefWidth="249.0" />
+                                            </children>
+                                        </Pane>
+                                    </children>
+                                </HBox>
+                                <HBox layoutX="10.0" layoutY="416.0" prefHeight="0.0" prefWidth="880.0">
+                                    <children>
+                                        <Label prefHeight="5.0" prefWidth="171.0" text="Email">
+                                            <font>
+                                                <Font name="System Bold" size="14.0" />
+                                            </font>
+                                            <padding>
+                                                <Insets bottom="30.0" left="50.0" right="50.0" top="30.0" />
+                                            </padding>
+                                        </Label>
+                                        <Pane prefHeight="7.0" prefWidth="326.0">
+                                            <children>
+                                                <TextField fx:id="emailField" layoutX="42.0" layoutY="28.0" onKeyReleased="#validateEmail" prefHeight="26.0" prefWidth="249.0" />
+                                            </children>
+                                        </Pane>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                        <Button mnemonicParsing="false" onAction="#handleSaveChanges" prefHeight="50.0" prefWidth="155.0" text="Save Changes" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="15.0" />
+                            </font>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                        </Button>
+                    </children>
+                </VBox>
+            </center>
+        </BorderPane>
+    </center>
+</BorderPane>

@@ -1,6 +1,5 @@
 package com.example.duanshopbangiay;
 
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -47,7 +47,8 @@ public class UserShopController implements Initializable {
     private GridPane grid;
     @FXML
     private HBox HboxLogout;
-
+    @FXML
+    private HBox HboxInformation;
     @FXML
     private ImageView cartIcon; // Thêm ImageView cho giỏ hàng
 
@@ -62,6 +63,7 @@ public class UserShopController implements Initializable {
     private Stage cartViewStage;
 
     private FXMLLoader cartViewLoader;
+
 
     private List<Product> loadProductsFromFile() {
         List<Product> products = new ArrayList<>();
@@ -358,5 +360,16 @@ public class UserShopController implements Initializable {
             e.printStackTrace();
         }
     }
+    @FXML
+    private void switchToUserInformation() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("UserInformation.fxml"));
+            Parent userInformationRoot = loader.load();
+            Stage stage = (Stage) HboxInformation.getScene().getWindow();
+            stage.setScene(new Scene(userInformationRoot));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
-

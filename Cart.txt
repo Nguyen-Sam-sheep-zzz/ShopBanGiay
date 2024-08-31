@@ -1,2 +1,0 @@
-5,Jordan 1 R&W,900.00,1,B22222,36,/img/Red-remove-preview.png
-2,Jordan 1 Ocean,100.00,1,0099CC,36,/img/MidN-remove-preview.png
