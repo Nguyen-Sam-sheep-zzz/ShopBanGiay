@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -55,7 +54,7 @@ public class UserInformation {
     @FXML
     private void initialize() {
         displayProfileSettings.setVisible(false);
-        genderComboBox.getItems().addAll("Nam", "Nữ", "Khác");
+        genderComboBox.getItems().addAll("Male", "Female", "Other");
         setEditableFields(false);
         User currentUser = UserSession.getCurrentUser();
         if (currentUser != null) {
@@ -85,10 +84,10 @@ public class UserInformation {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể chuyển đến trang Order List.");
+                showAlert(Alert.AlertType.ERROR, "Error", "Unable to navigate to Order List page.");
             }
         } else {
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Tên người dùng không hợp lệ.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Invalid username.");
         }
     }
 
@@ -97,13 +96,13 @@ public class UserInformation {
         if (currentUser != null) {
             showUserDetails(currentUser.getUsername());
         } else {
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Tên người dùng không hợp lệ.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Invalid username.");
         }
     }
 
     private void loadUserInfo(User currentUser) {
         if (currentUser == null) {
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Tên người dùng không hợp lệ.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Invalid username.");
             return;
         }
 
@@ -124,18 +123,18 @@ public class UserInformation {
             }
 
             if (!userFound) {
-                showAlert(Alert.AlertType.ERROR, "Lỗi", "Không tìm thấy người dùng.");
+                showAlert(Alert.AlertType.ERROR, "Error", "User not found");
             }
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể tải thông tin người dùng.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Unable to load user information.");
         }
     }
 
     private void updateUserInfo(String fullName, String gender, String email, String phoneNumber) {
         User currentUser = UserSession.getCurrentUser();
         if (currentUser == null || currentUser.getUsername().trim().isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Tên người dùng không hợp lệ.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Invalid username.");
             return;
         }
 
@@ -154,15 +153,15 @@ public class UserInformation {
             }
 
             if (!userFound) {
-                showAlert(Alert.AlertType.ERROR, "Lỗi", "Không tìm thấy người dùng.");
+                showAlert(Alert.AlertType.ERROR, "Error", "User not found.");
                 return;
             }
 
             Files.write(Paths.get("users.txt"), lines, StandardOpenOption.TRUNCATE_EXISTING);
-            showAlert(Alert.AlertType.INFORMATION, "Thành công", "Thông tin đã được cập nhật.");
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Information has been updated.");
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể lưu thông tin người dùng.");
+                showAlert(Alert.AlertType.ERROR, "Error", "Unable to save user information.");
         }
     }
 
@@ -184,7 +183,7 @@ public class UserInformation {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể quay lại trang User Shop.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Cannot return to User Shop page.");
         }
     }
 
@@ -208,17 +207,17 @@ public class UserInformation {
         String phoneNumber = phoneNumberField.getText().trim();
 
         if (fullName.isEmpty() || gender.isEmpty() || email.isEmpty() || phoneNumber.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Vui lòng điền đầy đủ thông tin.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Please fill in all information.");
             return;
         }
 
         if (!isValidEmail(email)) {
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Email không hợp lệ.");
+                showAlert(Alert.AlertType.ERROR, "Error", "Invalid email.");
             return;
         }
 
         if (!isValidPhoneNumber(phoneNumber)) {
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Số điện thoại không hợp lệ.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Invalid phone number.");
             return;
         }
 

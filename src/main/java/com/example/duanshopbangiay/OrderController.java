@@ -234,6 +234,8 @@ public class OrderController {
         quantityColumn.setVisible(false);
         colorColumn.setVisible(false);
         sizeColumn.setVisible(false);
+        buttonDisplayShopUser.setVisible(false);
+        buttonDisplayShopUser.setManaged(false);
 
         orderTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) { // Kiểm tra nếu là nhấp chuột đơn
