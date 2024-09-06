@@ -1,2 +1,8 @@
 Tester,Nhân Sâm,Nam,0776454375,samcoxe0307@gmail.com,123,user
 NhanSam,Sâm,Male,0776454375,Samcoxe0307@gmail.com,123,user
+Chanh,Chí Anh,Male,0914549608,ChiAnh@gmail.com,123,user
+NhanSam,null,null,null,null,123,admin
+ChiAnh,null,null,null,null,123,admin
+VietTam,null,null,null,null,123,admin
+DucDuy,null,null,null,null,123,admin
+KhanhNhang,Khánh Thế,Other,0987654321,KhanhNhang@gmail.com,123,user

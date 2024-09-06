@@ -1,4 +1,4 @@
-1,Jordan 1 Pine,500.0,10,228B22,42,/img/Green-remove-preview.png
+1,Jordan 1 Pine,500.0,0,228B22,42,/img/Green-remove-preview.png
 2,Jordan 1 Ocean,100.0,5,0099CC,42,/img/MidN-remove-preview.png
 3,Jordan 1 Happy,300.0,8,D2691E,42,/img/Orange-remove-preview.png
 4,Jordan 1 Rose,800.0,6,FF1493,43,/img/Pink-remove-preview.png

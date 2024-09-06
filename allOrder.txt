@@ -6,3 +6,9 @@
 13,Unknown User,2,2:Jordan 1 Ocean:/img/MidN-remove-preview.png:100.00:1:0099CC:36;1:Jordan 1 Pine:/img/Green-remove-preview.png:500.00:1:228B22:36,600.00,Waiting for payment,2024-08-26 13:55:27
 14,NhanSam,3,1:Jordan 1 Pine:/img/Green-remove-preview.png:500.00:1:228B22:36;2:Jordan 1 Ocean:/img/MidN-remove-preview.png:100.00:1:0099CC:36;4:Jordan 1 Rose:/img/Pink-remove-preview.png:800.00:1:FF1493:36,1400.00,Waiting for payment,2024-08-30 14:16:56
 15,Tester,3,4:Jordan 1 Rose:/img/Pink-remove-preview.png:800.00:1:FF1493:36;2:Jordan 1 Ocean:/img/MidN-remove-preview.png:100.00:1:0099CC:36;1:Jordan 1 Pine:/img/Green-remove-preview.png:500.00:1:228B22:36,1400.00,Waiting for payment,2024-08-30 15:32:46
+16,Chanh,2,2:Jordan 1 Ocean:/img/MidN-remove-preview.png:100.00:1:0099CC:36;3:Jordan 1 Happy:/img/Orange-remove-preview.png:300.00:1:D2691E:36,400.00,Waiting for payment,2024-09-05 13:24:37
+17,Tester,1,6:Jordan 1 SSJ:/img/YellowOriginal-remove-preview.png:600.00:1:FFB605:36,600.00,Waiting for payment,2024-09-05 13:35:48
+18,KhanhNhang,2,2:Jordan 1 Ocean:/img/MidN-remove-preview.png:100.00:1:0099CC:36;3:Jordan 1 Happy:/img/Orange-remove-preview.png:300.00:1:D2691E:36,400.00,Waiting for payment,2024-09-05 13:49:46
+19,Tester,1,1:Jordan 1 Pine:/img/Green-remove-preview.png:500.00:1:228B22:36,500.00,Waiting for payment,2024-09-06 13:43:32
+20,Tester,1,1:Jordan 1 Pine:/img/Green-remove-preview.png:500.00:9:228B22:36,4500.00,Waiting for payment,2024-09-06 13:44:15
+21,KhanhNhang,1,1:Jordan 1 Pine:/img/Green-remove-preview.png:500.00:10:228B22:36,5000.00,Waiting for payment,2024-09-06 13:51:31

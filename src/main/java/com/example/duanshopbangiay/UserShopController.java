@@ -292,6 +292,15 @@ public class UserShopController implements Initializable {
                 .orElse(null);
 
         if (selectedProduct != null) {
+
+            if (selectedProduct.getQuantity() == 0) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Sold out");
+                alert.setHeaderText(null);
+                alert.setContentText("This product is currently out of stock. Please choose another product.");
+                alert.showAndWait();
+                return;
+            }
             // Lấy thông tin từ ComboBox
             Integer selectedQuantity = quantityComboBox.getValue();
             String selectedSize = sizeComboBox.getValue();

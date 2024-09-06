@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CartViewController {
     @FXML
@@ -41,6 +42,8 @@ public class CartViewController {
     private TableColumn<Product, Void> actionsColumn;
     @FXML
     private Label totalAmountLabel;
+
+    private ObservableList<Product> productList;
 
     private ObservableList<Product> cartItems = FXCollections.observableArrayList();
     private Cart cart;
@@ -206,6 +209,18 @@ public class CartViewController {
     }
     @FXML
     private void handlePayNow(ActionEvent event) {
+
+        // Kiểm tra nếu giỏ hàng trống
+        if (cartItems.isEmpty()) {
+            // Hiển thị thông báo cảnh báo nếu giỏ hàng trống
+            Alert emptyCartAlert = new Alert(Alert.AlertType.WARNING);
+            emptyCartAlert.setTitle("Empty Cart");
+            emptyCartAlert.setHeaderText(null);
+            emptyCartAlert.setContentText("Your cart is empty. Please add products before proceeding to payment.");
+            emptyCartAlert.show();
+            return; // Ngừng thực hiện nếu giỏ hàng trống
+        }
+
         // Tính tổng số tiền của đơn hàng từ danh sách sản phẩm trong giỏ hàng
         double totalAmount = cartItems.stream().mapToDouble(p -> p.getPrice() * p.getQuantity()).sum();
 
@@ -239,6 +254,8 @@ public class CartViewController {
                 // Lưu đơn hàng vào tệp
                 saveOrderToFile(orderDisplay);
 
+                updateProductStock();
+
                 // Xóa giỏ hàng và cập nhật tổng số tiền
                 cartItems.clear();
                 updateTotalAmount();
@@ -258,6 +275,65 @@ public class CartViewController {
             }
         });
     }
+
+    private void updateProductStock() {
+        // Đọc danh sách sản phẩm từ file products.txt
+        List<Product> productsInStock = new ArrayList<>();
+        File file = new File("products.txt");
+
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split(",");
+                    if (parts.length == 7) {
+                        int id = Integer.parseInt(parts[0]);
+                        String name = parts[1];
+                        double price = Double.parseDouble(parts[2]);
+                        int quantity = Integer.parseInt(parts[3]);
+                        String color = parts[4];
+                        String size = parts[5];
+                        String imagePath = parts[6];
+
+                        Product product = new Product(id, name, price, quantity, color, size, imagePath);
+                        productsInStock.add(product);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Cập nhật số lượng sản phẩm trong kho dựa trên sản phẩm đã mua
+        for (Product cartProduct : cartItems) {
+            for (Product stockProduct : productsInStock) {
+                if (cartProduct.getId() == stockProduct.getId()) {
+                    // Trừ số lượng sản phẩm trong kho dựa trên số lượng đã mua
+                    int updatedQuantity = stockProduct.getQuantity() - cartProduct.getQuantity();
+                    stockProduct.setQuantity(updatedQuantity);
+                    break;
+                }
+            }
+        }
+
+        // Lưu lại danh sách sản phẩm đã cập nhật số lượng vào file products.txt
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("products.txt"))) {
+            for (Product product : productsInStock) {
+                writer.write(product.getId() + "," +
+                        product.getName() + "," +
+                        product.getPrice() + "," +
+                        product.getQuantity() + "," +
+                        product.getColor() + "," +
+                        product.getSize() + "," +
+                        product.getImagePath());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private void clearCartFile() {
         try {
             FileWriter fileWriter = new FileWriter("Cart.txt", false);
