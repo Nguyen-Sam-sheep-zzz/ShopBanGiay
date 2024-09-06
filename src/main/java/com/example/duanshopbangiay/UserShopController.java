@@ -102,6 +102,9 @@ public class UserShopController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Xóa tất cả các sản phẩm hiện tại
+        products.clear();
+
         products.addAll(loadProductsFromFile());
         int maxQuantity = 10;
         String[] availableSizes = {"36", "37", "38", "39", "40", "41", "42"};
@@ -161,6 +164,11 @@ public class UserShopController implements Initializable {
 
         // Thiết lập sự kiện cho giỏ hàng
         cartIcon.setOnMouseClicked(event -> showCartView());
+
+    }
+    public void refresh() {
+        products.clear();
+        products.addAll(loadProductsFromFile());
     }
 
     private void showCartView() {
@@ -285,6 +293,7 @@ public class UserShopController implements Initializable {
 
     @FXML
     private void handleAddToCart() {
+        refresh();
         // Lấy thông tin sản phẩm hiện tại
         Product selectedProduct = products.stream()
                 .filter(p -> p.getName().equals(productNameLabel.getText()))
@@ -320,9 +329,9 @@ public class UserShopController implements Initializable {
             if (selectedQuantity > selectedProduct.getQuantity()) {
                 // Kiểm tra nếu số lượng chọn lớn hơn số lượng có sẵn
                 Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Cảnh báo");
+                alert.setTitle("Warning");
                 alert.setHeaderText(null);
-                alert.setContentText("Số lượng chọn không hợp lệ. Vui lòng chọn số lượng nhỏ hơn hoặc bằng số lượng có sẵn.");
+                alert.setContentText("The selected quantity is invalid. Please select a quantity less than or equal to the available quantity.");
                 alert.showAndWait();
                 return;
             }

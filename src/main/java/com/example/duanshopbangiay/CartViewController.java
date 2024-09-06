@@ -3,7 +3,10 @@ package com.example.duanshopbangiay;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -272,9 +275,13 @@ public class CartViewController {
                 // Đóng cửa sổ hiện tại
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.close();
+                UserShopController userShopController = new UserShopController();
+                userShopController.refresh();
             }
         });
     }
+
+
 
     private void updateProductStock() {
         // Đọc danh sách sản phẩm từ file products.txt
